@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Skill Assessment Quizzes - HireSphere{% endblock %}
+
+{% block content %}
+<div class="row align-items-center mb-4">
+    <div class="col-md-8">
+        <h2 class="fw-bold mb-1"><i class="fas fa-certificate text-success me-2"></i>Skill Assessments & Quizzes</h2>
+        <p class="text-muted mb-0">Validate your practical abilities through timed, objective domain assessments. Passing scores earn verified badges visible to recruiters and boost your job compatibility ranking.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="{% url 'users:profile' %}" class="btn btn-outline-secondary"><i class="fas fa-user me-1"></i>My Profile Badges</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for item in category_cards %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card card-custom h-100 card-hover p-4 d-flex flex-column justify-content-between">
+            <div>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="p-3 rounded-4 bg-mint-subtle text-success fs-3">
+                        <i class="fas {{ item.category.icon }}"></i>
+                    </div>
+                    {% if item.status and item.status.passed %}
+                        <span class="badge bg-success px-3 py-2 rounded-pill"><i class="fas fa-check-circle me-1"></i>Verified ({{ item.status.best_score }}%)</span>
+                    {% elif item.status %}
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill"><i class="fas fa-clock-rotate-left me-1"></i>Retake Needed ({{ item.status.best_score }}%)</span>
+                    {% else %}
+                        <span class="badge bg-light text-muted border px-3 py-2 rounded-pill">Not Attempted</span>
+                    {% endif %}
+                </div>
+
+                <h4 class="fw-bold mb-2">{{ item.category.name }}</h4>
+                <p class="text-muted small mb-3">{{ item.category.description|default:"Test your core theoretical and practical understanding with 5 focused multiple-choice questions." }}</p>
+
+                <div class="d-flex gap-3 small text-secondary mb-4">
+                    <span><i class="fas fa-list-ol text-success me-1"></i>5 Questions</span>
+                    <span><i class="fas fa-stopwatch text-success me-1"></i>5 Minutes</span>
+                    <span><i class="fas fa-bullseye text-success me-1"></i>Pass: {{ item.category.passing_score }}%</span>
+                </div>
+            </div>
+
+            <div>
+                <a href="{% url 'users:take_quiz' item.category.id %}" class="btn btn-brand w-100">
+                    {% if item.status and item.status.passed %}
+                        <i class="fas fa-arrow-rotate-right me-1"></i>Retake Quiz
+                    {% else %}
+                        <i class="fas fa-play me-1"></i>Start Assessment
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">No quizzes available at the moment. Please seed questions.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

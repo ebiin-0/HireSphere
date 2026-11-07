@@ -1,0 +1,461 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}HireSphere - A simpler way to move your career forward{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Interactive Section with Ambient Breathing Glow */
+    .hero-interactive-section {
+        position: relative;
+        overflow: visible;
+        padding-top: 1rem;
+        padding-bottom: 2rem;
+    }
+
+    /* Floating Pill Search Bar with 3D Depth & Breathing Pulse */
+    .pill-search-wrapper {
+        position: relative;
+        z-index: 2;
+        padding-top: 2rem;
+        padding-bottom: 2.2rem;
+    }
+    .pill-search-box {
+        background: var(--search-bg);
+        border-radius: 50px;
+        padding: 8px 10px 8px 26px;
+        border: 1px solid var(--hs-border);
+        max-width: 660px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+    .pill-search-box:focus-within {
+        border-color: var(--hs-green);
+        transform: translateY(-3px) scale(1.015);
+        box-shadow: 0 18px 45px var(--hs-green-glow);
+    }
+    .pill-field {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+    }
+    .pill-input {
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 0.95rem;
+        color: var(--hs-dark);
+        width: 100%;
+        font-weight: 500;
+    }
+    .pill-input::placeholder {
+        color: var(--hs-text-muted);
+        font-weight: 400;
+    }
+    .pill-divider {
+        width: 1px;
+        height: 28px;
+        background: var(--hs-border);
+        flex-shrink: 0;
+    }
+
+    /* 3D Tactile Buttons with Realistic Depth Press */
+    .btn-pill-search {
+        background-color: var(--hs-green);
+        color: #ffffff !important;
+        font-weight: 700;
+        border-radius: 40px;
+        padding: 10px 26px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        white-space: nowrap;
+        box-shadow: 0 4px 0 #007a33, 0 8px 18px var(--hs-green-glow);
+    }
+    .btn-pill-search:hover {
+        background-color: var(--hs-green-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 #007a33, 0 12px 25px var(--hs-green-glow);
+    }
+    .btn-pill-search:active {
+        transform: translateY(3px);
+        box-shadow: 0 1px 0 #007a33, 0 4px 10px var(--hs-green-glow);
+    }
+
+    /* Popular Tags Row with 3D Floating Badges */
+    .popular-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 14px;
+        font-size: 0.9rem;
+        position: relative;
+        z-index: 2;
+    }
+    .popular-label {
+        color: var(--hs-text-muted);
+        font-weight: 500;
+    }
+    .popular-badge {
+        background: var(--hs-card-bg);
+        border: 1px solid var(--hs-border);
+        color: var(--hs-dark);
+        text-decoration: none;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 2px 0 var(--hs-border), 0 3px 6px rgba(0,0,0,0.02);
+    }
+    .popular-badge:hover {
+        border-color: var(--hs-green);
+        color: var(--hs-green);
+        transform: translateY(-3px) scale(1.06);
+        box-shadow: 0 4px 0 var(--hs-green), 0 8px 20px var(--hs-green-glow);
+    }
+
+    /* HOW HIRESPHERE HELPS Section matching Screenshot */
+    .section-helps-wrapper {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+        position: relative;
+        z-index: 2;
+    }
+    .category-badge-green {
+        color: var(--hs-green);
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        display: inline-block;
+        padding: 4px 14px;
+        background: var(--hs-green-light);
+        border-radius: 20px;
+        box-shadow: 0 2px 10px var(--hs-green-glow);
+    }
+    .headline-helps {
+        font-size: 2.45rem;
+        font-weight: 800;
+        color: var(--hs-dark);
+        letter-spacing: -0.8px;
+        line-height: 1.2;
+        margin-bottom: 14px;
+    }
+    .subtext-helps {
+        font-size: 1.05rem;
+        color: var(--hs-text-muted);
+        line-height: 1.6;
+        max-width: 640px;
+        margin: 0 auto 46px auto;
+    }
+
+    /* 3 Feature Cards with 3D Layering & Pop-out Depth */
+    .feature-card-hs {
+        background: var(--hs-card-bg);
+        border: 1px solid var(--hs-border);
+        border-radius: 24px;
+        padding: 36px 30px;
+        height: 100%;
+        box-shadow: var(--card-shadow);
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+    }
+    .feature-card-hs::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--hs-green), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .feature-card-hs:hover::before {
+        opacity: 1;
+    }
+    .feature-icon-box {
+        width: 50px;
+        height: 50px;
+        background: var(--hs-green-light);
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--hs-green);
+        font-size: 1.35rem;
+        margin-bottom: 24px;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        transform: translateZ(35px);
+        box-shadow: 0 4px 15px var(--hs-green-glow);
+    }
+    .feature-card-hs:hover .feature-icon-box {
+        transform: translateZ(48px) scale(1.12) rotate(8deg);
+        box-shadow: 0 8px 25px var(--hs-green-glow);
+    }
+    .feature-card-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--hs-dark);
+        margin-bottom: 10px;
+        transform: translateZ(26px);
+    }
+    .feature-card-text {
+        font-size: 0.95rem;
+        color: var(--hs-text-muted);
+        line-height: 1.6;
+        margin-bottom: 0;
+        transform: translateZ(18px);
+    }
+
+    /* Jobs Section Header */
+    .jobs-section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 1.5rem;
+    }
+    .job-card-hs {
+        background: var(--hs-card-bg);
+        border-radius: 22px;
+        border: 1px solid var(--hs-border);
+        box-shadow: var(--card-shadow);
+        padding: 26px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transform-style: preserve-3d;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<!-- Ambient Breathing Glowing Background Orbs -->
+<div class="bg-ambient-orb orb-1"></div>
+<div class="bg-ambient-orb orb-2"></div>
+
+<div class="container hero-interactive-section">
+
+    <!-- ======================================================== -->
+    <!-- SECTION 1: Top Search Bar & Popular Tags (Exact Match)    -->
+    <!-- ======================================================== -->
+    <div class="pill-search-wrapper animate-fade-in-up delay-1">
+        <form method="get" action="{% url 'jobs:job_list' %}" class="pill-search-box breathing-pulse">
+            <!-- Job title input -->
+            <div class="pill-field">
+                <i class="fas fa-search text-success me-2"></i>
+                <input 
+                    type="text" 
+                    name="q" 
+                    class="pill-input" 
+                    placeholder="Job title or keywords" 
+                    value="{{ query }}"
+                    autocomplete="off"
+                >
+            </div>
+
+            <!-- Divider -->
+            <div class="pill-divider"></div>
+
+            <!-- Location input -->
+            <div class="pill-field">
+                <i class="fas fa-location-dot text-success me-2"></i>
+                <input 
+                    type="text" 
+                    name="location" 
+                    class="pill-input" 
+                    placeholder="City or location" 
+                    value="{{ location }}"
+                    autocomplete="off"
+                >
+            </div>
+
+            <!-- Search Button with 3D Depth Press -->
+            <button type="submit" class="btn-pill-search">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+
+        <!-- Popular Tags Row matching Screenshot -->
+        <div class="popular-row">
+            <span class="popular-label">Popular:</span>
+            <a href="?q=Remote" class="popular-badge">Remote</a>
+            <a href="?q=Designer" class="popular-badge">Designer</a>
+            <a href="?q=Engineer" class="popular-badge">Engineer</a>
+            <a href="?q=Python" class="popular-badge">Python</a>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 2: HOW HIRESPHERE HELPS (Exact Match)             -->
+    <!-- ======================================================== -->
+    <div class="section-helps-wrapper text-center animate-fade-in-up delay-2">
+        <div class="category-badge-green"><i class="fas fa-sparkles me-1"></i>HOW HIRESPHERE HELPS</div>
+        <h1 class="headline-helps">A simpler way to move your career forward</h1>
+        <p class="subtext-helps">
+            Explore opportunities, discover employers and present your professional profile through one candidate-focused platform.
+        </p>
+
+        <!-- 3 Feature Cards matching Screenshot with 3D Tilt Effect & Glare -->
+        <div class="row g-4 justify-content-center">
+            <!-- Card 1: Discover opportunities -->
+            <div class="col-md-4 animate-fade-in-up delay-3">
+                <div class="feature-card-hs tilt-card-3d">
+                    <div class="feature-icon-box">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-card-title">Discover opportunities</h3>
+                    <p class="feature-card-text">
+                        Find relevant openings using job keywords and preferred locations.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 2: Build your profile -->
+            <div class="col-md-4 animate-fade-in-up delay-4">
+                <div class="feature-card-hs tilt-card-3d">
+                    <div class="feature-icon-box">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3 class="feature-card-title">Build your profile</h3>
+                    <p class="feature-card-text">
+                        Organise your candidate information and showcase your skills and experience.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 3: Explore employers -->
+            <div class="col-md-4 animate-fade-in-up delay-5">
+                <div class="feature-card-hs tilt-card-3d">
+                    <div class="feature-icon-box">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="feature-card-title">Explore employers</h3>
+                    <p class="feature-card-text">
+                        Browse company information and learn more about potential workplaces.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 3: Current Job Opportunities with 3D Tilt         -->
+    <!-- ======================================================== -->
+    <div class="my-5 pt-3 position-relative animate-fade-in-up delay-4" style="z-index: 2;">
+        <div class="jobs-section-header">
+            <div>
+                <h4 class="fw-bold mb-1" style="color: var(--hs-dark);">Current Opportunities</h4>
+                <p class="small mb-0" style="color: var(--hs-text-muted);">Verified jobs matched with candidate competencies.</p>
+            </div>
+            <span class="small" style="color: var(--hs-text-muted);"><span class="live-radar-dot"></span> Showing {{ page_obj.paginator.count }} available position(s)</span>
+        </div>
+
+        <div class="row g-4">
+            {% for job in page_obj %}
+            <div class="col-md-6 col-lg-4">
+                <div class="job-card-hs tilt-card-3d">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="company-logo-badge rounded-3 overflow-hidden d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px; background: #ffffff; border: 1px solid var(--hs-border); flex-shrink: 0;">
+                                    {% if job.company.get_logo_url %}
+                                        <img src="{{ job.company.get_logo_url }}" alt="{{ job.company.name }} Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                                    {% else %}
+                                        <div class="rounded-3 d-flex align-items-center justify-content-center fw-bold text-white" style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--hs-green), #008736); font-size: 1rem;">
+                                            {{ job.company.name|slice:":1" }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div style="min-width: 0;">
+                                    <span class="fw-bold d-block text-truncate" style="color: var(--hs-dark); font-size: 0.85rem; max-width: 150px;" title="{{ job.company.name }}">
+                                        {{ job.company.name }}
+                                    </span>
+                                    <span class="text-muted d-block" style="font-size: 0.72rem; line-height: 1;">
+                                        <i class="fas fa-check-circle text-success me-1"></i>Verified Employer
+                                    </span>
+                                </div>
+                            </div>
+
+                            {% if job.user_match_score is not None %}
+                                <span class="badge rounded-pill px-3 py-2 fw-bold text-white flex-shrink-0" 
+                                      style="background: {% if job.user_match_score >= 80 %}linear-gradient(135deg, var(--hs-green), #008736){% elif job.user_match_score >= 60 %}linear-gradient(135deg, #0284c7, #0369a1){% else %}#64748b{% endif %}; font-size: 0.78rem;" 
+                                      title="Matched: {{ job.matched_skills|join:', ' }} | Missing: {{ job.missing_skills|join:', ' }}">
+                                    <i class="fas fa-bolt me-1"></i>{{ job.user_match_score }}% Match
+                                </span>
+                            {% else %}
+                                <span class="badge border small rounded-pill flex-shrink-0" style="background: var(--hs-card-bg); color: var(--hs-dark);">{{ job.get_job_type_display }}</span>
+                            {% endif %}
+                        </div>
+
+                        <h5 class="fw-bold mb-2">
+                            <a href="{% url 'jobs:job_detail' job.pk %}" class="text-decoration-none" style="color: var(--hs-dark); transition: color 0.2s;">
+                                {{ job.title }}
+                            </a>
+                        </h5>
+
+                        <div class="small mb-3" style="color: var(--hs-text-muted);">
+                            <div><i class="fas fa-location-dot text-success me-2"></i>{{ job.location }}</div>
+                            <div><i class="fas fa-briefcase text-success me-2"></i>{{ job.experience_level }}</div>
+                            {% if job.get_salary_range != "Salary not specified" %}
+                                <div class="fw-bold" style="color: var(--hs-green);"><i class="fas fa-indian-rupee-sign me-2"></i>{{ job.get_salary_range }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-1 mb-4">
+                            {% for skill in job.get_skills_list|slice:":3" %}
+                                <span class="badge border small rounded-pill" style="background: var(--hs-bg); color: var(--hs-text-muted);">{{ skill }}</span>
+                            {% endfor %}
+                            {% if job.get_skills_list|length > 3 %}
+                                <span class="badge border small rounded-pill" style="background: var(--hs-bg); color: var(--hs-text-muted);">+{{ job.get_skills_list|length|add:"-3" }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top d-flex justify-content-between align-items-center" style="border-color: var(--hs-border) !important;">
+                        <small style="color: var(--hs-text-muted);">{{ job.posted_date|timesince }} ago</small>
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="{% url 'jobs:job_detail' job.pk %}" class="btn btn-sm btn-hs-outline px-2 rounded-pill small">
+                                Details
+                            </a>
+                            {% if job.has_applied %}
+                                <span class="badge bg-success rounded-pill px-3 py-2">
+                                    <i class="fas fa-check me-1"></i>Applied
+                                </span>
+                            {% else %}
+                                <a href="{% url 'jobs:apply_job' job.pk %}" class="btn btn-sm btn-hs-green px-3 rounded-pill fw-bold">
+                                    Apply Now
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p style="color: var(--hs-text-muted);">No jobs found matching your criteria.</p>
+                <a href="{% url 'jobs:home' %}" class="text-success small fw-bold">Clear filters</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+{% endblock extra_js %}

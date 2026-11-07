@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Candidate Registration Portal - HireSphere{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <!-- Header matching Fig 4.3 -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div></div>
+                <a href="{% url 'jobs:home' %}" class="text-secondary text-decoration-none small fw-semibold">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Home
+                </a>
+            </div>
+
+            <div class="mb-5">
+                <h1 class="fw-bold mb-2 text-dark" style="font-size: 2.25rem; letter-spacing: -0.5px;">Candidate Registration Portal</h1>
+                <p class="text-secondary fs-6 mb-0">Complete your profile and verify your skills to join the HireSphere network.</p>
+            </div>
+
+            <!-- Registration Form Card -->
+            <div class="card-hs p-4 p-md-5 mb-5 shadow-sm border">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Step 01: Personal Profile (Fig 4.3) -->
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <span class="rounded-pill px-2 py-1 text-white fw-bold small" style="background-color: #00b848; font-size: 0.8rem;">01</span>
+                        <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.25rem;">Personal Profile</h4>
+                    </div>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary mb-1">First Name</label>
+                            <input type="text" name="first_name" class="form-control form-control-hs" placeholder="John" required value="{{ form.first_name.value|default:'' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary mb-1">Last Name</label>
+                            <input type="text" name="last_name" class="form-control form-control-hs" placeholder="Doe" required value="{{ form.last_name.value|default:'' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary mb-1">Email Address</label>
+                            <input type="email" name="email" class="form-control form-control-hs" placeholder="john.doe@example.com" required value="{{ form.email.value|default:'' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary mb-1">Phone Number</label>
+                            <input type="text" name="phone" class="form-control form-control-hs" placeholder="+1 (555) 000-0000" value="{{ form.phone.value|default:'' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary mb-1">Password</label>
+                            <input type="password" name="password1" class="form-control form-control-hs" placeholder="••••••••" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary mb-1">Confirm Password</label>
+                            <input type="password" name="password2" class="form-control form-control-hs" placeholder="••••••••" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary mb-1">Choose Username</label>
+                            <input type="text" name="username" class="form-control form-control-hs" placeholder="johndoe" required value="{{ form.username.value|default:'' }}">
+                        </div>
+                        <input type="hidden" name="user_type" value="seeker">
+                    </div>
+
+                    <!-- Step 02: Academic Credentials (Fig 4.3) -->
+                    <div class="d-flex align-items-center gap-2 mb-4 pt-2 border-top">
+                        <span class="rounded-pill px-2 py-1 text-white fw-bold small mt-3" style="background-color: #00b848; font-size: 0.8rem;">02</span>
+                        <h4 class="fw-bold mb-0 text-dark mt-3" style="font-size: 1.25rem;">Academic Credentials</h4>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label small fw-bold text-secondary mb-1">Highest Degree / Specialization</label>
+                            <input type="text" name="education" class="form-control form-control-hs" placeholder="e.g. B.Tech in Computer Science and Engineering">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-secondary mb-1">Years of Experience</label>
+                            <input type="number" name="experience_years" class="form-control form-control-hs" placeholder="0" min="0" value="0">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary mb-1">Key Technical Skills (Comma-separated)</label>
+                            <input type="text" name="skills" class="form-control form-control-hs" placeholder="e.g. Python, SQL, React, Django, Docker">
+                        </div>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger py-2 small rounded-3 mb-4">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div>{{ field.label }}: {{ error }}</div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Submit Button -->
+                    <div class="d-flex justify-content-between align-items-center pt-3">
+                        <span class="small text-muted">Already registered? <a href="{% url 'login' %}" class="text-success fw-bold text-decoration-none">Log In</a></span>
+                        <button type="submit" class="btn-hs-green px-5 py-3 shadow" style="font-size: 1rem;">
+                            Complete Registration &rarr;
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

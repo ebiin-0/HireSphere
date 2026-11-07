@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Django: Run Server (Port 8000)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/django_backend/manage.py",
+            "args": [
+                "runserver",
+                "127.0.0.1:8000",
+                "--noreload"
+            ],
+            "django": true,
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/django_backend",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Django: Run KTU Feature Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/django_backend/test_all_features.py",
+            "cwd": "${workspaceFolder}/django_backend",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}

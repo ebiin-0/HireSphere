@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireSphere - Alex Rivera Profile</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --hs-green: #00b848;
+            --hs-green-hover: #009e3e;
+            --hs-green-light: #dcf5e7;
+            --hs-green-dark: #005a26;
+            --hs-bg: #f3f8f5;
+            --hs-card-bg: #ffffff;
+            --hs-dark: #111827;
+            --hs-text-muted: #6b7280;
+            --hs-border: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--hs-bg);
+            color: var(--hs-dark);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar */
+        .navbar-hs {
+            background-color: transparent;
+            padding: 1.2rem 0;
+        }
+        .navbar-brand-hs {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--hs-dark) !important;
+            letter-spacing: -0.5px;
+        }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #00b848 0%, #009e3e 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.15rem;
+            box-shadow: 0 4px 12px rgba(0, 184, 72, 0.28);
+        }
+        .nav-link-hs {
+            color: #4b5563 !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem !important;
+            text-decoration: none;
+        }
+        .nav-link-hs.active {
+            color: var(--hs-green) !important;
+        }
+
+        /* Cards */
+        .card-hs {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .badge-hs-pill {
+            background-color: var(--hs-green-light);
+            color: #007a33;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0.4rem 0.9rem;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-hs-green {
+            background-color: var(--hs-green);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 0.6rem 1.6rem;
+            border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(0, 184, 72, 0.25);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .btn-hs-green:hover {
+            background-color: var(--hs-green-hover);
+        }
+
+        .nav-tab-btn {
+            transition: all 0.2s ease;
+        }
+        .nav-tab-btn:hover {
+            background-color: #eaf7ef !important;
+            color: #00b848 !important;
+        }
+        .nav-tab-btn.active {
+            background-color: #dcf5e7 !important;
+            color: #007a33 !important;
+        }
+        .screen-switcher-bar {
+            background: #111827;
+            color: #ffffff;
+            padding: 8px 18px;
+            font-size: 13px;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .screen-switcher-bar a {
+            color: #a7f3d0;
+            text-decoration: none;
+            padding: 3px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+        .screen-switcher-bar a:hover, .screen-switcher-bar a.active-screen {
+            background-color: #00b848;
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Quick Switcher Bar across all 5 KTU report screenshots -->
+<div class="screen-switcher-bar">
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <span class="badge" style="background: #00b848; font-size: 11px;">KTU REPORT SCREENS</span>
+        <span class="fw-bold me-1 text-white">Click to View Interface:</span>
+        <a href="index.html"><i class="fas fa-home me-1"></i>Fig 4.1 Home Page</a>
+        <a href="register.html"><i class="fas fa-user-plus me-1"></i>Fig 4.3 Candidate Registration</a>
+        <a href="profile.html#overview" class="active-screen"><i class="fas fa-id-card me-1"></i>Fig 4.4 Candidate Profile</a>
+        <a href="profile.html#sectionResume" class="active-screen"><i class="fas fa-chart-pie me-1"></i>Fig 4.5 Resume Analysis &amp; Quizzes</a>
+        <a href="companies.html"><i class="fas fa-building me-1"></i>Fig 4.6 Recruiter &amp; Companies</a>
+    </div>
+    <div class="text-white-50 small">
+        <i class="fas fa-bolt text-warning me-1"></i>Double-click <b>RUN_PROJECT.bat</b> to launch full Django server
+    </div>
+</div>
+
+<!-- Header Navbar matching Fig 4.4 -->
+<nav class="navbar navbar-expand-lg navbar-hs">
+    <div class="container">
+        <a class="navbar-brand-hs" href="home.html">
+            <div class="logo-icon"><i class="fas fa-cube"></i></div>
+            <span>HireSphere</span>
+        </a>
+
+        <div class="collapse navbar-collapse show" id="navMain">
+            <ul class="navbar-nav mx-auto align-items-center gap-2">
+                <li class="nav-item"><a class="nav-link-hs" href="companies.html">Companies</a></li>
+                <li class="nav-item"><a class="nav-link-hs" href="#">About Us</a></li>
+                <li class="nav-item"><a class="nav-link-hs active" href="profile.html">Profile</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+                <img src="img/alex_avatar.jpg" class="rounded-circle border border-2 border-success" width="38" height="38" style="object-fit: cover;" alt="Avatar" onerror="this.src='django_backend/static/img/alex_avatar.jpg';">
+                <span class="fw-bold text-dark small">Alex Rivera</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Container matching Fig 4.4 & 4.5 -->
+<div class="container py-4">
+    <div class="row g-4">
+        <!-- ========================================== -->
+        <!-- LEFT COLUMN: Profile Card, Tabs & Privacy (Fig 4.4) -->
+        <!-- ========================================== -->
+        <div class="col-lg-4 col-xl-3">
+            <!-- Profile Card -->
+            <div class="card-hs p-4 text-center mb-4 border">
+                <div class="position-relative d-inline-block mx-auto mb-3">
+                    <img src="img/alex_avatar.jpg" class="rounded-circle border border-3 border-white shadow-sm" width="125" height="125" style="object-fit: cover;" alt="Avatar" onerror="this.src='django_backend/static/img/alex_avatar.jpg';">
+                    <div class="position-absolute bottom-0 end-0 rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px; background: #00b848;">
+                        <i class="fas fa-camera fa-xs"></i>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-1 text-dark">Alex Rivera</h5>
+                <p class="small fw-semibold mb-4" style="color: #00b848;">Senior Product Designer</p>
+
+                <!-- Sidebar Menu Navigation (Fig 4.4) -->
+                <div class="d-flex flex-column gap-2 text-start">
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-bold border-0 nav-tab-btn active" onclick="switchTab('overview')">
+                        <i class="fas fa-grid-2 text-success"></i>Overview
+                    </button>
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-medium border-0 nav-tab-btn text-secondary" onclick="switchTab('education')">
+                        <i class="fas fa-graduation-cap text-muted"></i>Education
+                    </button>
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-medium border-0 nav-tab-btn text-secondary" onclick="switchTab('resume')">
+                        <i class="fas fa-file-lines text-muted"></i>Resume Analysis
+                    </button>
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-medium border-0 nav-tab-btn text-secondary" onclick="switchTab('skills')">
+                        <i class="fas fa-bullseye text-muted"></i>Skills
+                    </button>
+                </div>
+            </div>
+
+            <!-- PRIVACY STATUS Box matching Fig 4.4 -->
+            <div class="card-hs p-3 border shadow-sm" style="background: #ffffff; border-radius: 18px;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted fw-bold small" style="font-size: 0.7rem; letter-spacing: 0.5px;">PRIVACY STATUS</span>
+                    <span class="badge-hs-pill small" style="font-size: 0.65rem; padding: 0.2rem 0.6rem;">SHIELD ACTIVE</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-bold text-dark small">Data Masked</div>
+                        <p class="text-muted mb-0" style="font-size: 0.75rem; line-height: 1.4; max-width: 170px;">
+                            Sensitive info like profile pic and scores are hidden from public view.
+                        </p>
+                    </div>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" checked style="width: 2.4rem; height: 1.25rem; background-color: #00b848; border-color: #00b848;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- RIGHT COLUMN: Content Panes (Fig 4.4 & Fig 4.5) -->
+        <!-- ========================================== -->
+        <div class="col-lg-8 col-xl-9">
+            
+            <!-- SECTION 1: Personal Information & Education Cards (Fig 4.4) -->
+            <div id="sectionOverview">
+                <div class="card-hs p-4 p-md-5 mb-4 border shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">Personal Information</h4>
+                        <a href="#" class="text-success text-decoration-none fw-bold small">
+                            <i class="fas fa-pen me-1"></i>Edit Details
+                        </a>
+                    </div>
+                    <p class="text-muted small mb-4">Manage your private and public profile details.</p>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Full Name</span>
+                                <span class="fw-bold text-dark">Alex Rivera</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Email Address</span>
+                                <span class="fw-bold text-dark">alex.rivera@design.co</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Phone Number</span>
+                                    <span class="fw-bold text-dark" id="phoneDisplay">+91 ********45</span>
+                                </div>
+                                <button type="button" class="btn btn-link text-muted p-0 shadow-none" onclick="togglePhoneMask()">
+                                    <i class="fas fa-eye-slash" id="phoneEyeIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Location</span>
+                                <span class="fw-bold text-dark">San Francisco, CA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education & Certificates Card matching Fig 4.4 -->
+                <div class="card-hs p-4 p-md-5 mb-4 border shadow-sm">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-success" style="width: 28px; height: 28px; background: #dcf5e7;">
+                            <i class="fas fa-certificate fa-sm"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">Education & Certificates</h4>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">BACHELOR'S DEGREE</span>
+                                    <h6 class="fw-bold mb-2 text-dark">B.Des Visual Design</h6>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-success fw-bold text-decoration-none small d-inline-flex align-items-center gap-1">
+                                        <i class="fas fa-file-lines"></i> View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">SECONDARY EDUCATION</span>
+                                    <h6 class="fw-bold mb-2 text-dark">Class 12th Certificate</h6>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-success fw-bold text-decoration-none small d-inline-flex align-items-center gap-1">
+                                        <i class="fas fa-file-lines"></i> View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">HIGH SCHOOL</span>
+                                    <h6 class="fw-bold mb-2 text-dark">Class 10th Certificate</h6>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-success fw-bold text-decoration-none small d-inline-flex align-items-center gap-1">
+                                        <i class="fas fa-file-lines"></i> View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION 2: AI Resume Analysis & Skills Assessment (Fig 4.5) -->
+            <!-- ========================================== -->
+            <div id="sectionResume">
+                <div class="card-hs p-4 p-md-5 mb-4 border shadow-sm">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-success" style="width: 28px; height: 28px; background: #dcf5e7;">
+                            <i class="fas fa-leaf fa-sm"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">AI Resume Analysis</h4>
+                    </div>
+
+                    <div class="row g-4">
+                        <!-- Left Box: Update Resume (Fig 4.5) -->
+                        <div class="col-lg-7">
+                            <div class="p-4 text-center rounded-4 border border-dashed mb-3" style="background-color: #f7fcf9; border-color: #a3e6be !important;">
+                                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 48px; height: 48px; background: #dcf5e7; color: #00b848;">
+                                    <i class="fas fa-cloud-arrow-up fa-lg"></i>
+                                </div>
+                                <h6 class="fw-bold text-dark mb-1">Update Resume</h6>
+                                <p class="text-muted small mb-3">Drag and drop your PDF or DOCX here</p>
+                                <button type="button" class="btn-hs-green px-4 py-2">
+                                    Browse Files
+                                </button>
+                            </div>
+
+                            <!-- Attached File Card matching Fig 4.5 -->
+                            <div class="p-3 rounded-3 bg-light border d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="text-success fs-3">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark small text-truncate" style="max-width: 260px;">
+                                            Alex_Rivera_Design_Resume_2024.pdf
+                                        </div>
+                                        <span class="text-muted text-uppercase" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;">
+                                            UPLOADED OCT 12, 2024
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-link text-muted p-0 shadow-none"><i class="fas fa-trash-can"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Box: RESUME QUALITY SCORE Circular Gauge (Fig 4.5) -->
+                        <div class="col-lg-5">
+                            <div class="p-4 rounded-4 bg-light border text-center h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">RESUME QUALITY SCORE</span>
+
+                                    <div class="position-relative d-inline-block mx-auto mb-3" style="width: 140px; height: 140px;">
+                                        <svg width="140" height="140" viewBox="0 0 140 140">
+                                            <circle cx="70" cy="70" r="54" fill="none" stroke="#e1f5eb" stroke-width="12"/>
+                                            <circle cx="70" cy="70" r="54" fill="none" stroke="#00b848" stroke-width="12"
+                                                    stroke-dasharray="339.29"
+                                                    stroke-dashoffset="50.89"
+                                                    stroke-linecap="round"
+                                                    transform="rotate(-90 70 70)"/>
+                                        </svg>
+                                        <div class="position-absolute top-50 start-50 translate-middle text-center" style="line-height: 1;">
+                                            <div class="fw-extrabold text-dark" style="font-size: 1.85rem;">85%</div>
+                                            <div class="fw-bold mt-1" style="font-size: 0.7rem; color: #00b848; letter-spacing: 0.5px;">EXCELLENT</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-start small mt-2 ps-2">
+                                    <div class="mb-2 d-flex align-items-center gap-2">
+                                        <span class="rounded-circle" style="width: 8px; height: 8px; background-color: #00b848;"></span>
+                                        <span class="text-dark fw-medium" style="font-size: 0.8rem;">ATS Keyword Optimized</span>
+                                    </div>
+                                    <div class="mb-2 d-flex align-items-center gap-2">
+                                        <span class="rounded-circle" style="width: 8px; height: 8px; background-color: #00b848;"></span>
+                                        <span class="text-dark fw-medium" style="font-size: 0.8rem;">Clear Action Verbs</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="rounded-circle border" style="width: 8px; height: 8px; background-color: #f59e0b;"></span>
+                                        <span class="text-dark fw-medium" style="font-size: 0.8rem;">Add Portfolio Link</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verified Skills & Assessments matching Fig 4.5 -->
+                <div class="card-hs p-4 p-md-5 border shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-success" style="width: 28px; height: 28px; background: #dcf5e7;">
+                                <i class="fas fa-circle-check fa-sm"></i>
+                            </div>
+                            <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">Verified Skills & Assessments</h4>
+                        </div>
+                        <span class="badge bg-light text-muted border text-uppercase px-2 py-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">PUBLICLY MASKED</span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-success" style="width: 32px; height: 32px; background: #dcf5e7;">
+                                            <i class="fas fa-layer-group fa-sm"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-0 text-dark">UI/UX Design</h6>
+                                    </div>
+                                    <span class="text-muted fw-bold small" style="font-size: 0.7rem;">SCORE: 88/100</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; background-color: #e5e7eb;">
+                                    <div class="progress-bar" role="progressbar" style="width: 88%; background-color: #00b848;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-success" style="width: 32px; height: 32px; background: #dcf5e7;">
+                                            <i class="fas fa-code fa-sm"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-0 text-dark">Frontend Dev (React)</h6>
+                                    </div>
+                                    <span class="text-muted fw-bold small" style="font-size: 0.7rem;">SCORE: 82/100</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; background-color: #e5e7eb;">
+                                    <div class="progress-bar" role="progressbar" style="width: 82%; background-color: #00b848;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-success" style="width: 32px; height: 32px; background: #dcf5e7;">
+                                            <i class="fas fa-chart-pie fa-sm"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-0 text-dark">Product Strategy</h6>
+                                    </div>
+                                    <span class="text-muted fw-bold small" style="font-size: 0.7rem;">SCORE: 90/100</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; background-color: #e5e7eb;">
+                                    <div class="progress-bar" role="progressbar" style="width: 90%; background-color: #00b848;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <a href="#" class="p-3 rounded-4 bg-light border text-decoration-none d-flex align-items-center gap-3 h-100">
+                                <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-secondary" style="width: 36px; height: 36px; background: #e2e8f0;">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark">Take New Assessment</h6>
+                                    <small class="text-muted">Boost your profile visibility</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+let phoneMasked = true;
+function togglePhoneMask() {
+    const display = document.getElementById('phoneDisplay');
+    const icon = document.getElementById('phoneEyeIcon');
+    if (phoneMasked) {
+        display.textContent = "+91 98460 54321";
+        icon.className = "fas fa-eye";
+        phoneMasked = false;
+    } else {
+        display.textContent = "+91 ********45";
+        icon.className = "fas fa-eye-slash";
+        phoneMasked = true;
+    }
+}
+function switchTab(t) {}
+</script>
+</body>
+</html>

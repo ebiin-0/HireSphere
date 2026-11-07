@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Create Company - SkillHire{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white"><h4><i class="fas fa-building me-2"></i>Create Company Profile</h4></div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+          <div class="row"><div class="col-md-6">{{ form.name|as_crispy_field }}</div><div class="col-md-6">{{ form.website|as_crispy_field }}</div></div>
+          <div class="row"><div class="col-md-6">{{ form.industry|as_crispy_field }}</div><div class="col-md-6">{{ form.employee_count|as_crispy_field }}</div></div>
+          <div class="row"><div class="col-md-6">{{ form.location|as_crispy_field }}</div><div class="col-md-6">{{ form.founded_year|as_crispy_field }}</div></div>
+          <div class="mb-3">{{ form.logo|as_crispy_field }}</div>
+          <div class="mb-3">{{ form.description|as_crispy_field }}</div>
+          <button type="submit" class="btn btn-success w-100"><i class="fas fa-save me-2"></i>Create Company Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

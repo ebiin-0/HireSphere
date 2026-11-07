@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block content %}
+<div class="py-4 py-lg-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+      <div class="p-4 p-md-5 bg-white rounded-4 shadow-sm border">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+          <div>
+            <p class="text-uppercase text-primary fw-semibold small mb-2">HireSphere</p>
+            <h1 class="display-5 fw-bold mb-2">{{ page.headline }}</h1>
+            {% if page.subtitle %}<p class="lead text-secondary mb-0">{{ page.subtitle }}</p>{% endif %}
+          </div>
+          {% if page.page_type == 'quiz' %}
+            <span class="badge text-bg-success fs-6 px-3 py-2">{{ page.subtitle }}</span>
+          {% endif %}
+        </div>
+
+        {% if page.lead %}
+          <p class="text-muted fs-5 mb-4">{{ page.lead }}</p>
+        {% endif %}
+
+        {% if page.page_type == 'landing' %}
+          <div class="row g-3 mb-4">
+            {% for action in page.actions %}
+              <div class="col-md-6">
+                <a class="btn btn-{{ action.variant }} btn-lg w-100 py-4" href="{{ action.href }}">{{ action.label }}</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% elif page.actions %}
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            {% for action in page.actions %}
+              <a class="btn btn-{{ action.variant }}" href="{{ action.href }}">{{ action.label }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if page.stats %}
+          <div class="row g-3 mb-4">
+            {% for stat in page.stats %}
+              <div class="col-md-4">
+                <div class="card h-100 border-0 bg-light rounded-4">
+                  <div class="card-body">
+                    <div class="text-muted small text-uppercase mb-1">{{ stat.label }}</div>
+                    <div class="fs-4 fw-bold">{{ stat.value }}</div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if page.cards %}
+          <div class="row g-3">
+            {% for card in page.cards %}
+              <div class="col-md-6 col-lg-4">
+                <a href="{{ card.href }}" class="card h-100 text-decoration-none border-0 shadow-sm rounded-4 card-hover">
+                  <div class="card-body">
+                    <h5 class="card-title text-dark fw-bold">{{ card.title }}</h5>
+                    <p class="card-text text-muted">{{ card.text }}</p>
+                    <span class="text-primary fw-semibold">Open page →</span>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if page.steps %}
+          <div class="mb-4">
+            <div class="d-flex flex-wrap gap-2">
+              {% for step in page.steps %}
+                <a href="{{ step.href }}" class="btn {% if forloop.first %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">{{ step.label }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if page.note %}
+          <div class="alert alert-info mb-0">{{ page.note }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.card-hover { transition: transform .2s ease, box-shadow .2s ease; }
+.card-hover:hover { transform: translateY(-2px); box-shadow: 0 1rem 2rem rgba(0,0,0,.10) !important; }
+</style>
+{% endblock %}

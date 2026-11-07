@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HireSphere - A simpler way to move your career forward{% endblock %}</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js & Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --hs-green: #00b848;
+            --hs-green-hover: #009e3e;
+            --hs-green-light: #dcf5e7;
+            --hs-green-dark: #005a26;
+            --hs-green-glow: rgba(0, 184, 72, 0.35);
+            --hs-bg: #f7fbf8;
+            --hs-card-bg: #ffffff;
+            --hs-card-elevated: #ffffff;
+            --hs-dark: #0f172a;
+            --hs-text-muted: #64748b;
+            --hs-border: #e2e8f0;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --card-shadow-3d: 0 20px 45px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0,0,0,0.05);
+            --cursor-glow: rgba(0, 184, 72, 0.15);
+            --search-bg: #ffffff;
+            --footer-bg: #0b1120;
+        }
+
+        [data-theme="dark"] {
+            --hs-green: #00e676;
+            --hs-green-hover: #00c853;
+            --hs-green-light: rgba(0, 230, 118, 0.15);
+            --hs-green-dark: #00e676;
+            --hs-green-glow: rgba(0, 230, 118, 0.5);
+            --hs-bg: #080c14;
+            --hs-card-bg: #0e1626;
+            --hs-card-elevated: #131d33;
+            --hs-dark: #f8fafc;
+            --hs-text-muted: #94a3b8;
+            --hs-border: #1e293b;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --card-shadow-3d: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 230, 118, 0.15);
+            --cursor-glow: rgba(0, 230, 118, 0.25);
+            --search-bg: #0f172a;
+            --footer-bg: #050811;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--hs-bg);
+            color: var(--hs-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s ease;
+            overflow-x: hidden;
+        }
+
+        /* Global Silk Smooth Theme Transition */
+        body, 
+        .card-hs, 
+        .card-custom, 
+        .feature-card-hs, 
+        .job-card-hs, 
+        .pill-search-box, 
+        .navbar-hs, 
+        footer {
+            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        color 0.4s ease,
+                        border-color 0.4s ease,
+                        box-shadow 0.4s ease;
+        }
+
+        /* Professional Theme Switch Pill with Perfect Micro-Animation */
+        .theme-switch-pill {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            user-select: none;
+            border-radius: 30px;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .theme-switch-pill:hover {
+            transform: scale(1.04);
+        }
+        .theme-switch-pill:active .theme-switch-thumb {
+            transform: scale(0.88);
+        }
+        [data-theme="dark"] .theme-switch-pill:active .theme-switch-thumb {
+            transform: translateX(25px) scale(0.88);
+        }
+        .theme-switch-track {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 30px;
+            padding: 2px 3px;
+            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.4s ease, 
+                        box-shadow 0.4s ease;
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--hs-border);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        [data-theme="dark"] .theme-switch-track {
+            background: #1e293b;
+            border-color: #334155;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+        .theme-switch-thumb {
+            width: 24px;
+            height: 24px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16), 0 0 1px rgba(0,0,0,0.1);
+            transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), 
+                        background-color 0.35s ease, 
+                        box-shadow 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            transform: translateX(1px);
+        }
+        [data-theme="dark"] .theme-switch-thumb {
+            transform: translateX(25px);
+            background: #0f172a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 12px rgba(56, 189, 248, 0.45);
+        }
+        .theme-switch-thumb .icon-sun,
+        .theme-switch-thumb .icon-moon {
+            position: absolute;
+            font-size: 11.5px;
+            transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), 
+                        opacity 0.28s ease, 
+                        filter 0.3s ease;
+        }
+        :root:not([data-theme="dark"]) .icon-sun {
+            color: #f59e0b;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.6));
+        }
+        :root:not([data-theme="dark"]) .icon-moon {
+            color: #38bdf8;
+            opacity: 0;
+            transform: scale(0.2) rotate(-135deg);
+        }
+        [data-theme="dark"] .icon-sun {
+            color: #f59e0b;
+            opacity: 0;
+            transform: scale(0.2) rotate(135deg);
+        }
+        [data-theme="dark"] .icon-moon {
+            color: #38bdf8;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.7));
+        }
+        .theme-switch-pill:hover .theme-switch-track {
+            border-color: var(--hs-green);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08), 0 0 10px var(--hs-green-glow);
+        }
+
+        /* Staggered Professional Entrance Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .delay-1 { animation-delay: 0.08s; }
+        .delay-2 { animation-delay: 0.18s; }
+        .delay-3 { animation-delay: 0.28s; }
+        .delay-4 { animation-delay: 0.38s; }
+        .delay-5 { animation-delay: 0.48s; }
+
+        /* Subtle Live Radar Pulse */
+        @keyframes liveRadarPulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 184, 72, 0.6);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 7px rgba(0, 184, 72, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 184, 72, 0);
+            }
+        }
+        .live-radar-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--hs-green);
+            border-radius: 50%;
+            display: inline-block;
+            animation: liveRadarPulse 2.2s infinite;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* Ultra-Modern Frosted Glass Header Navbar */
+        .navbar-hs {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            padding: 0.85rem 0;
+            background: rgba(247, 251, 248, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        [data-theme="dark"] .navbar-hs {
+            background: rgba(8, 12, 20, 0.82);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+        }
+        .navbar-hs.scrolled {
+            padding: 0.65rem 0;
+            background: rgba(247, 251, 248, 0.94);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border-bottom-color: rgba(0, 184, 72, 0.15);
+        }
+        [data-theme="dark"] .navbar-hs.scrolled {
+            background: rgba(8, 12, 20, 0.94);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 25px rgba(0, 230, 118, 0.06);
+            border-bottom-color: rgba(0, 230, 118, 0.15);
+        }
+
+        .navbar-brand-hs {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--hs-dark) !important;
+            letter-spacing: -0.5px;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .navbar-brand-hs:hover {
+            transform: scale(1.02);
+        }
+        .navbar-brand-hs .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--hs-green) 0%, var(--hs-green-hover) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 16px var(--hs-green-glow);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .navbar-brand-hs .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: linear-gradient(60deg, transparent 35%, rgba(255,255,255,0.45) 50%, transparent 65%);
+            transform: rotate(25deg);
+            transition: transform 0.6s ease;
+        }
+        .navbar-brand-hs:hover .logo-icon {
+            transform: rotate(10deg) scale(1.08);
+        }
+        .navbar-brand-hs:hover .logo-icon::after {
+            transform: rotate(25deg) translate(30%, 30%);
+        }
+
+        .nav-link-hs {
+            color: var(--hs-text-muted) !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 24px;
+            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            position: relative;
+        }
+        .nav-link-hs i {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .nav-link-hs:hover {
+            color: var(--hs-green) !important;
+            background: var(--hs-green-light);
+            transform: translateY(-1px);
+        }
+        .nav-link-hs:hover i {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+        .nav-link-hs.active {
+            color: var(--hs-green) !important;
+            background: var(--hs-green-light);
+            font-weight: 700;
+            box-shadow: 0 2px 8px var(--hs-green-glow);
+        }
+        .nav-link-hs.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: var(--hs-green);
+            border-radius: 50%;
+        }
+
+        /* Buttons */
+        .btn-hs-green {
+            background-color: var(--hs-green);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 0.58rem 1.5rem;
+            border: none;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 14px var(--hs-green-glow);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-hs-green:hover {
+            background-color: var(--hs-green-hover);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px var(--hs-green-glow);
+        }
+        .btn-hs-outline {
+            color: var(--hs-dark) !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 0.52rem 1.3rem;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--hs-border);
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-hs-outline:hover {
+            color: var(--hs-green) !important;
+            border-color: var(--hs-green);
+            background: var(--hs-green-light);
+            transform: translateY(-1px);
+        }
+        .user-chip-btn {
+            background: var(--hs-card-bg);
+            border: 1px solid var(--hs-border);
+            padding: 4px 14px 4px 5px;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .user-chip-btn:hover {
+            border-color: var(--hs-green);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px var(--hs-green-glow);
+        }
+
+        /* Back to Top Button */
+        .back-to-top-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 0.45rem 1rem;
+            border-radius: 25px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .back-to-top-btn:hover {
+            background: var(--hs-green);
+            color: #ffffff;
+            border-color: var(--hs-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px var(--hs-green-glow);
+        }
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .back-to-top-btn:hover {
+            background: var(--hs-green);
+            color: #ffffff;
+            border-color: var(--hs-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px var(--hs-green-glow);
+        }
+
+        /* 3D Depth Card Tilt & Specular Glare */
+        .tilt-card-3d {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.25s ease, border-color 0.25s ease;
+            will-change: transform;
+            position: relative;
+        }
+        .tilt-card-3d:hover {
+            box-shadow: var(--card-shadow-3d) !important;
+            border-color: var(--hs-green) !important;
+        }
+        .card-glare-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            mix-blend-mode: overlay;
+            z-index: 5;
+        }
+
+        /* Breathing Effect */
+        @keyframes breatheOrb {
+            0%, 100% {
+                transform: scale(1) translate(0px, 0px) rotate(0deg);
+                opacity: 0.45;
+            }
+            50% {
+                transform: scale(1.22) translate(25px, -20px) rotate(180deg);
+                opacity: 0.75;
+            }
+        }
+        @keyframes breathePulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 var(--hs-green-glow), 0 10px 30px rgba(0,0,0,0.06);
+            }
+            50% {
+                box-shadow: 0 0 25px 6px var(--hs-green-glow), 0 15px 40px rgba(0,0,0,0.12);
+            }
+        }
+        .breathing-pulse {
+            animation: breathePulse 3.5s ease-in-out infinite;
+        }
+
+        /* Ambient 3D background orbs */
+        .bg-ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(75px);
+            pointer-events: none;
+            z-index: 0;
+            animation: breatheOrb 8s ease-in-out infinite alternate;
+        }
+        .orb-1 {
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, var(--hs-green-glow) 0%, rgba(0, 184, 72, 0) 70%);
+            top: -60px;
+            right: 5%;
+        }
+        .orb-2 {
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(56, 189, 248, 0) 70%);
+            top: 200px;
+            left: 2%;
+            animation-delay: -4s;
+        }
+
+        /* Dropdown Dark Mode */
+        [data-theme="dark"] .dropdown-menu {
+            background-color: #0f172a;
+            border-color: #1e293b;
+            color: #f8fafc;
+        }
+        [data-theme="dark"] .dropdown-item {
+            color: #cbd5e1;
+        }
+        [data-theme="dark"] .dropdown-item:hover {
+            background-color: #1e293b;
+            color: #00e676;
+        }
+        [data-theme="dark"] .card-hs, 
+        [data-theme="dark"] .card-custom, 
+        [data-theme="dark"] .bg-white,
+        [data-theme="dark"] .bg-light {
+            background-color: var(--hs-card-bg) !important;
+            border-color: var(--hs-border) !important;
+            color: var(--hs-dark) !important;
+        }
+        [data-theme="dark"] .text-dark {
+            color: #f8fafc !important;
+        }
+        [data-theme="dark"] .text-secondary,
+        [data-theme="dark"] .text-muted {
+            color: #94a3b8 !important;
+        }
+        [data-theme="dark"] .border {
+            border-color: var(--hs-border) !important;
+        }
+        [data-theme="dark"] .btn-hs-outline {
+            color: #f8fafc !important;
+        }
+
+        /* Overall Full-Screen 3D Celestial Background Canvas */
+        .overall-3d-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        #career3DCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Elegant Frosted Glass Cards so 3D Celestial Sphere & Particles show through */
+        .card-hs, 
+        .card-custom, 
+        .feature-card-hs, 
+        .job-card-hs, 
+        .pill-search-box {
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        :root:not([data-theme="dark"]) .card-hs, 
+        :root:not([data-theme="dark"]) .card-custom, 
+        :root:not([data-theme="dark"]) .feature-card-hs, 
+        :root:not([data-theme="dark"]) .job-card-hs, 
+        :root:not([data-theme="dark"]) .pill-search-box {
+            background-color: rgba(255, 255, 255, 0.88) !important;
+        }
+        [data-theme="dark"] .card-hs, 
+        [data-theme="dark"] .card-custom, 
+        [data-theme="dark"] .feature-card-hs, 
+        [data-theme="dark"] .job-card-hs, 
+        [data-theme="dark"] .pill-search-box {
+            background-color: rgba(14, 22, 38, 0.84) !important;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+{% block background_canvas %}
+<!-- Overall 3D Interactive Celestial Background Canvas -->
+<div class="overall-3d-bg" id="overall3DContainer">
+    <canvas id="career3DCanvas"></canvas>
+</div>
+{% endblock background_canvas %}
+
+{% block navbar %}
+<!-- Ultra-Modern Frosted Glass Header Navbar -->
+<nav class="navbar navbar-expand-lg navbar-hs">
+    <div class="container">
+        <!-- Brand Logo with 3D Sheen -->
+        <a class="navbar-brand-hs" href="{% url 'jobs:home' %}">
+            <div class="logo-icon"><i class="fas fa-cube"></i></div>
+            <span>HireSphere</span>
+        </a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler border-0 shadow-none text-muted" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <i class="fas fa-bars fs-4"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMain">
+            <!-- Center Navigation Links with Icons & Active Indicator -->
+            <ul class="navbar-nav mx-auto align-items-center gap-1 my-3 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link-hs {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'jobs:home' %}">
+                        <i class="fas fa-compass"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-hs {% if 'companies' in request.path %}active{% endif %}" href="{% url 'companies:directory' %}">
+                        <i class="fas fa-building"></i> Companies
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-hs {% if 'quizzes' in request.path %}active{% endif %}" href="{% url 'users:quiz_catalog' %}">
+                        <i class="fas fa-graduation-cap"></i> Skill Quizzes
+                    </a>
+                </li>
+                {% if user.is_authenticated and user.user_type == 'seeker' %}
+                <li class="nav-item">
+                    <a class="nav-link-hs {% if 'profile' in request.path %}active{% endif %}" href="{% url 'users:profile' %}">
+                        <i class="fas fa-id-card"></i> Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-hs" href="{% url 'users:my_applications' %}">
+                        <i class="fas fa-paper-plane"></i> Applications
+                    </a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated and user.user_type == 'company' %}
+                <li class="nav-item">
+                    <a class="nav-link-hs" href="{% url 'companies:dashboard' %}">
+                        <i class="fas fa-chart-line"></i> Recruiter Portal
+                    </a>
+                </li>
+                {% endif %}
+                {% if user.is_staff or user.is_superuser or user.user_type == 'admin' %}
+                <li class="nav-item">
+                    <a class="nav-link-hs" href="{% url 'admin_panel:dashboard' %}">
+                        <i class="fas fa-shield"></i> Admin
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <!-- Right Controls (Theme Switcher + Auth / Profile) -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- Dark / Light Mode Switcher Pill with Micro-Animation -->
+                <button class="theme-switch-pill me-2" id="themeToggleBtn" type="button" aria-label="Toggle Dark/Light Mode" title="Toggle Dark/Light Mode">
+                    <span class="theme-switch-track">
+                        <span class="theme-switch-thumb">
+                            <i class="fas fa-sun icon-sun"></i>
+                            <i class="fas fa-moon icon-moon"></i>
+                        </span>
+                    </span>
+                </button>
+
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <a class="user-chip-btn text-decoration-none dropdown-toggle text-dark fw-bold" href="#" role="button" data-bs-toggle="dropdown">
+                        {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" class="rounded-circle border border-2 border-success" width="34" height="34" style="object-fit: cover;" alt="Avatar">
+                        {% else %}
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm" style="width: 34px; height: 34px; background: linear-gradient(135deg, var(--hs-green), #008736); font-size: 0.95rem;">
+                                {{ user.first_name|default:user.username|slice:":1"|upper }}
+                            </div>
+                        {% endif %}
+                        <span class="d-none d-sm-inline small ms-1">{{ user.first_name|default:user.username }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 p-2 mt-2">
+                        <li><span class="dropdown-item-text small text-muted">Role: <strong class="text-success">{{ user.get_user_type_display }}</strong></span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item rounded-3" href="{% url 'users:profile' %}"><i class="fas fa-user-circle me-2 text-success"></i>Profile &amp; Resume</a></li>
+                        {% if user.user_type == 'company' %}
+                            <li><a class="dropdown-item rounded-3" href="{% url 'companies:dashboard' %}"><i class="fas fa-chart-line me-2 text-success"></i>Recruiter Dashboard</a></li>
+                            <li><a class="dropdown-item rounded-3" href="{% url 'jobs:create_job' %}"><i class="fas fa-plus me-2 text-success"></i>Post New Job</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item rounded-3" href="{% url 'users:quiz_catalog' %}"><i class="fas fa-award me-2 text-success"></i>Skill Assessments</a></li>
+                            <li><a class="dropdown-item rounded-3" href="{% url 'users:my_applications' %}"><i class="fas fa-file-invoice me-2 text-success"></i>My Applications</a></li>
+                        {% endif %}
+                        {% if user.is_staff or user.is_superuser %}
+                            <li><a class="dropdown-item rounded-3" href="{% url 'admin_panel:dashboard' %}"><i class="fas fa-shield me-2 text-success"></i>Admin Panel</a></li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item rounded-3 text-danger"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn-hs-outline">
+                        <i class="fas fa-arrow-right-to-bracket"></i> Login
+                    </a>
+                    <a href="{% url 'users:register' %}" class="btn-hs-green">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock navbar %}
+
+<!-- Flash Messages -->
+{% if messages %}
+<div class="container mt-2">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
+        <i class="fas fa-info-circle me-2 text-success"></i>{{ message }}
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Main Body -->
+<main class="flex-grow-1 position-relative">
+    {% block content %}{% endblock %}
+</main>
+
+{% block footer %}
+<!-- Meaningful Quote & Clean Minimalist Footer -->
+<footer style="background-color: var(--footer-bg); border-top: 1px solid var(--hs-border); padding: 26px 0 20px 0; margin-top: auto; position: relative; z-index: 10;">
+    <div class="container">
+        <!-- Meaningful Career Inspiration Quote -->
+        <div class="text-center mb-3 pb-3 border-bottom border-secondary border-opacity-25">
+            <p class="fst-italic text-white-50 mb-1" style="font-size: 0.95rem; font-weight: 500;">
+                <i class="fas fa-quote-left text-success me-2" style="opacity: 0.7;"></i>
+                <span id="footerCareerQuote">"The future depends on what you do today."</span>
+                <i class="fas fa-quote-right text-success ms-2" style="opacity: 0.7;"></i>
+            </p>
+            <span class="small text-white-50" style="opacity: 0.65;" id="footerCareerAuthor">&mdash; Mahatma Gandhi</span>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <div class="fw-bold text-white fs-5" style="letter-spacing: -0.3px;">HireSphere</div>
+                <div class="text-white-50 small">&copy; 2025 HireSphere.&nbsp;&nbsp;&nbsp;&nbsp;Academic project.</div>
+            </div>
+            <div>
+                <button type="button" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Back to Top">
+                    <span>Back to Top</span>
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock footer %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Meaningful Career & Ambition Quotes Rotator
+    (function initFooterQuotes() {
+        const careerQuotes = [
+            { quote: "The future depends on what you do today.", author: "Mahatma Gandhi" },
+            { quote: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { quote: "Opportunities don't happen, you create them.", author: "Chris Grosser" },
+            { quote: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+            { quote: "Your talent determines what you can do. Your motivation determines how much you are willing to do.", author: "Lou Holtz" },
+            { quote: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+            { quote: "It always seems impossible until it's done.", author: "Nelson Mandela" }
+        ];
+        const qEl = document.getElementById('footerCareerQuote');
+        const aEl = document.getElementById('footerCareerAuthor');
+        if (qEl && aEl) {
+            const randomQ = careerQuotes[Math.floor(Math.random() * careerQuotes.length)];
+            qEl.textContent = `"${randomQ.quote}"`;
+            aEl.innerHTML = `&mdash; ${randomQ.author}`;
+        }
+    })();
+
+    // 1. Dark & Light Mode Controller
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const savedTheme = localStorage.getItem('hs-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', initialTheme);
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('hs-theme', next);
+        });
+    }
+
+    // 2. 3D Tilt Effect on Cursor Movement for Cards with Specular Glare
+    function setup3DTilt() {
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (isTouchDevice) return;
+        document.querySelectorAll('.tilt-card-3d').forEach(card => {
+            let glare = card.querySelector('.card-glare-3d');
+            if (!glare) {
+                glare = document.createElement('div');
+                glare.className = 'card-glare-3d';
+                card.appendChild(glare);
+            }
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -14;
+                const rotateY = ((x - centerX) / centerX) * 14;
+                card.style.transform = `perspective(1200px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(16px) scale3d(1.025, 1.025, 1.025)`;
+                
+                const percentX = (x / rect.width) * 100;
+                const percentY = (y / rect.height) * 100;
+                glare.style.opacity = '1';
+                glare.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale3d(1, 1, 1)';
+                if (glare) glare.style.opacity = '0';
+            });
+        });
+    }
+    setup3DTilt();
+
+    // 3. Interactive Full-Screen 3D Celestial Background with Silky Scroll & Parallax Effect
+    (function initOverall3DBackground() {
+        const canvas = document.getElementById('career3DCanvas');
+        if (!canvas || typeof THREE === 'undefined') return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 8.5;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Group containing all 3D objects
+        const group3D = new THREE.Group();
+        scene.add(group3D);
+
+        // Get initial theme
+        const getIsDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+        let isDark = getIsDark();
+
+        // 1. Outer Geodesic Icosahedron Wireframe
+        const geoMesh = new THREE.IcosahedronGeometry(2.35, 1);
+        const matMesh = new THREE.MeshBasicMaterial({
+            color: isDark ? 0x00e676 : 0x00b848,
+            wireframe: true,
+            transparent: true,
+            opacity: isDark ? 0.65 : 0.42
+        });
+        const sphereMesh = new THREE.Mesh(geoMesh, matMesh);
+        group3D.add(sphereMesh);
+
+        // 2. Inner Glowing Core Sphere
+        const coreGeo = new THREE.SphereGeometry(1.35, 20, 20);
+        const coreMat = new THREE.MeshBasicMaterial({
+            color: isDark ? 0x38bdf8 : 0x0284c7,
+            wireframe: true,
+            transparent: true,
+            opacity: isDark ? 0.55 : 0.32
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        group3D.add(core);
+
+        // 3. Orbiting Particles Field
+        const particleCount = 260;
+        const particleGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            const radius = 2.6 + Math.random() * 2.0;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+            positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+            positions[i + 2] = radius * Math.cos(phi);
+        }
+        particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particleMat = new THREE.PointsMaterial({
+            color: isDark ? 0x00e676 : 0x00a843,
+            size: 0.08,
+            transparent: true,
+            opacity: isDark ? 0.85 : 0.65
+        });
+        const particles = new THREE.Points(particleGeo, particleMat);
+        group3D.add(particles);
+
+        // 4. Dual Orbiting Rings
+        const ringGeo1 = new THREE.TorusGeometry(3.3, 0.016, 16, 90);
+        const ringGeo2 = new THREE.TorusGeometry(3.6, 0.016, 16, 90);
+        const ringMat = new THREE.MeshBasicMaterial({ 
+            color: isDark ? 0x00e676 : 0x00b848, 
+            transparent: true, 
+            opacity: isDark ? 0.55 : 0.35 
+        });
+        
+        const ring1 = new THREE.Mesh(ringGeo1, ringMat);
+        ring1.rotation.x = Math.PI / 3;
+        group3D.add(ring1);
+
+        const ring2 = new THREE.Mesh(ringGeo2, ringMat);
+        ring2.rotation.y = Math.PI / 3;
+        ring2.rotation.x = -Math.PI / 4;
+        group3D.add(ring2);
+
+        // Responsive base positioning
+        function updateBasePosition() {
+            const isDesktop = window.innerWidth >= 992;
+            return {
+                x: isDesktop ? 1.7 : 0,
+                y: isDesktop ? 0.2 : 0
+            };
+        }
+        let basePos = updateBasePosition();
+
+        // Scroll Tracking with Damped Inertia
+        let targetScrollY = window.scrollY || window.pageYOffset || 0;
+        let currentScrollY = targetScrollY;
+        let lastScrollY = targetScrollY;
+        let smoothedVelocity = 0;
+
+        window.addEventListener('scroll', () => {
+            targetScrollY = window.scrollY || window.pageYOffset || 0;
+            const nav = document.querySelector('.navbar-hs');
+            if (nav) {
+                if (targetScrollY > 20) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            }
+        }, { passive: true });
+
+        // Mouse Parallax
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+        let currentMouseX = 0;
+        let currentMouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            targetMouseX = ((e.clientX / window.innerWidth) * 2 - 1) * 0.45;
+            targetMouseY = (-(e.clientY / window.innerHeight) * 2 + 1) * 0.45;
+        });
+
+        // Window Resize Handling
+        function onWindowResize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            basePos = updateBasePosition();
+        }
+        window.addEventListener('resize', onWindowResize);
+
+        // Animation Loop with Scroll Effect
+        let clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            // Smooth scroll lerp (silky inertial momentum)
+            const scrollDelta = targetScrollY - currentScrollY;
+            currentScrollY += scrollDelta * 0.075;
+
+            // Scroll velocity
+            const vel = targetScrollY - lastScrollY;
+            lastScrollY = targetScrollY;
+            smoothedVelocity += (Math.abs(vel) - smoothedVelocity) * 0.1;
+
+            // Scroll progress across entire page (0 to 1)
+            const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            const scrollFraction = Math.min(1, Math.max(0, currentScrollY / maxScroll));
+
+            // Smooth mouse parallax lerp
+            currentMouseX += (targetMouseX - currentMouseX) * 0.05;
+            currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+
+            // SCROLL EFFECT:
+            // 1. Dynamic continuous rotation + responsive acceleration from scrolling
+            sphereMesh.rotation.y = elapsedTime * 0.12 + currentScrollY * 0.0032 + currentMouseX;
+            sphereMesh.rotation.x = elapsedTime * 0.08 + currentScrollY * 0.002 + currentMouseY;
+            sphereMesh.rotation.z = currentScrollY * 0.0008;
+
+            // 2. Inner core counter-rotation on scroll
+            core.rotation.y = - (elapsedTime * 0.2 + currentScrollY * 0.0048);
+            core.rotation.x = elapsedTime * 0.1 + currentScrollY * 0.0022;
+
+            // 3. Orbital rings dynamic tilt & spin with scroll
+            ring1.rotation.z = elapsedTime * 0.14 + currentScrollY * 0.0055;
+            ring2.rotation.z = - (elapsedTime * 0.12 + currentScrollY * 0.0045);
+            ring1.rotation.x = (Math.PI / 3) + currentScrollY * 0.001;
+            ring2.rotation.y = (Math.PI / 3) - currentScrollY * 0.001;
+
+            // 4. Particle cloud drift
+            particles.rotation.y = elapsedTime * 0.05 + currentScrollY * 0.0018;
+            particles.rotation.x = currentScrollY * 0.0009;
+
+            // 5. Parallax position shift across page sections as you scroll
+            const isDesktop = window.innerWidth >= 992;
+            const startX = isDesktop ? 1.7 : 0;
+            const endX = isDesktop ? -0.9 : 0;
+            group3D.position.x = startX + (endX - startX) * scrollFraction;
+            group3D.position.y = (isDesktop ? 0.2 : 0) - (currentScrollY * 0.0018);
+
+            // 6. Dynamic scale breathing pulse + scroll expansion
+            const breathe = 1 + Math.sin(elapsedTime * 1.2) * 0.025 + Math.min(0.12, smoothedVelocity * 0.0025);
+            group3D.scale.set(breathe, breathe, breathe);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Dynamic theme synchronization
+        const observer = new MutationObserver(() => {
+            const dark = getIsDark();
+            matMesh.color.setHex(dark ? 0x00e676 : 0x00b848);
+            matMesh.opacity = dark ? 0.65 : 0.42;
+
+            coreMat.color.setHex(dark ? 0x38bdf8 : 0x0284c7);
+            coreMat.opacity = dark ? 0.55 : 0.32;
+
+            particleMat.color.setHex(dark ? 0x00e676 : 0x00a843);
+            particleMat.opacity = dark ? 0.85 : 0.65;
+
+            ringMat.color.setHex(dark ? 0x00e676 : 0x00b848);
+            ringMat.opacity = dark ? 0.55 : 0.35;
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    })();
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

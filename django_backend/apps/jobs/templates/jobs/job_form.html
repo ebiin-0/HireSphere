@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if is_edit %}Edit Job: {{ job.title }}{% else %}Publish New Job Opportunity{% endif %} - HireSphere{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom p-4 border-start border-4 border-success">
+            <h4 class="fw-bold mb-1">
+                <i class="fas fa-briefcase text-success me-2"></i>
+                {% if is_edit %}Edit Job Opening{% else %}Publish New Job Opening{% endif %}
+            </h4>
+            <p class="text-muted small mb-4">Specify job requirements and required competencies for automatic skill matching and applicant ranking.</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-12">{{ form.title|as_crispy_field }}</div>
+                    <div class="col-md-6">{{ form.job_type|as_crispy_field }}</div>
+                    <div class="col-md-6">{{ form.experience_level|as_crispy_field }}</div>
+                    <div class="col-md-6">{{ form.location|as_crispy_field }}</div>
+                    <div class="col-md-3">{{ form.salary_min|as_crispy_field }}</div>
+                    <div class="col-md-3">{{ form.salary_max|as_crispy_field }}</div>
+                    <div class="col-12">{{ form.skills_required|as_crispy_field }}</div>
+                    <div class="col-12">{{ form.description|as_crispy_field }}</div>
+                    <div class="col-12">{{ form.requirements|as_crispy_field }}</div>
+                    <div class="col-md-6">{{ form.deadline|as_crispy_field }}</div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a href="{% url 'companies:dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-brand px-5 shadow">
+                        <i class="fas fa-check-circle me-2"></i>{% if is_edit %}Update Job Posting{% else %}Publish Job{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

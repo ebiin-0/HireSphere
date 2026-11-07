@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireSphere - Python Competency Assessment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --hs-green: #00b848;
+            --hs-green-hover: #009e3e;
+            --hs-green-light: #dcf5e7;
+            --hs-green-dark: #005a26;
+            --hs-bg: #f3f8f5;
+            --hs-dark: #111827;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--hs-bg);
+            color: var(--hs-dark);
+            min-height: 100vh;
+        }
+        .screen-switcher-bar {
+            background: #111827;
+            color: #ffffff;
+            padding: 8px 18px;
+            font-size: 13px;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .screen-switcher-bar a {
+            color: #a7f3d0;
+            text-decoration: none;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .screen-switcher-bar a:hover {
+            background-color: #00b848;
+            color: #ffffff !important;
+        }
+        .card-hs {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        .btn-hs-green {
+            background-color: var(--hs-green);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 0.75rem 2.5rem;
+            border: none;
+            box-shadow: 0 4px 14px rgba(0, 184, 72, 0.25);
+        }
+        .option-label {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #ffffff;
+        }
+        .option-label:hover {
+            border-color: #00b848;
+            background-color: #f7fcf9;
+        }
+        input[type="radio"]:checked + .option-label {
+            border-color: #00b848;
+            background-color: #eaf7ef;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="screen-switcher-bar">
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <span class="badge" style="background: #00b848; font-size: 11px;">KTU REPORT SCREENS</span>
+        <a href="index.html"><i class="fas fa-home me-1"></i>Fig 4.1 Home</a>
+        <a href="register.html"><i class="fas fa-user-plus me-1"></i>Fig 4.3 Register</a>
+        <a href="profile.html#overview"><i class="fas fa-id-card me-1"></i>Fig 4.4 Profile</a>
+        <a href="profile.html#sectionResume"><i class="fas fa-chart-pie me-1"></i>Fig 4.5 Resume Analysis</a>
+        <a href="companies.html"><i class="fas fa-building me-1"></i>Fig 4.6 Recruiters</a>
+        <a href="quiz.html" style="background: #00b848; color: #fff;"><i class="fas fa-check-double me-1"></i>Skill Quiz</a>
+    </div>
+    <div class="text-white-50 small">
+        Run <b>RUN_PROJECT.bat</b> for live dynamic platform
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card-hs p-4 mb-4 border-start border-4" style="border-left-color: #00b848 !important;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-light text-success fw-bold text-uppercase small mb-1">Official Skill Validation</span>
+                        <h3 class="fw-bold mb-1 text-dark">Python Competency Assessment</h3>
+                        <p class="text-muted small mb-0">Score at least 70% to earn your official verified skill badge on your profile.</p>
+                    </div>
+                    <div class="p-3 rounded-4 bg-light text-center border">
+                        <small class="text-muted d-block"><i class="fas fa-clock text-success me-1"></i>Time Left</small>
+                        <span class="fw-bold fs-5 text-dark" id="timer">04:45</span>
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); window.location.href='quiz_result.html';">
+                <!-- Q1 -->
+                <div class="card-hs p-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-dark">1. What is the output of print(type([])) in Python?</h5>
+                    <div class="d-flex flex-column gap-2">
+                        <label>
+                            <input type="radio" name="q1" class="d-none" required>
+                            <div class="option-label"><span>A)</span> &lt;class 'list'&gt;</div>
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" class="d-none">
+                            <div class="option-label"><span>B)</span> &lt;class 'tuple'&gt;</div>
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" class="d-none">
+                            <div class="option-label"><span>C)</span> &lt;class 'array'&gt;</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="card-hs p-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-dark">2. Which keyword is used for function creation in Python?</h5>
+                    <div class="d-flex flex-column gap-2">
+                        <label>
+                            <input type="radio" name="q2" class="d-none" required>
+                            <div class="option-label"><span>A)</span> def</div>
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" class="d-none">
+                            <div class="option-label"><span>B)</span> function</div>
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" class="d-none">
+                            <div class="option-label"><span>C)</span> fun</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="card-hs p-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-dark">3. Is Python an interpreted or compiled programming language?</h5>
+                    <div class="d-flex flex-column gap-2">
+                        <label>
+                            <input type="radio" name="q3" class="d-none" required>
+                            <div class="option-label"><span>A)</span> Interpreted</div>
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" class="d-none">
+                            <div class="option-label"><span>B)</span> Purely Compiled</div>
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" class="d-none">
+                            <div class="option-label"><span>C)</span> Machine Code Only</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <a href="profile.html" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+                    <button type="submit" class="btn-hs-green">Submit Assessment <i class="fas fa-arrow-right ms-2"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

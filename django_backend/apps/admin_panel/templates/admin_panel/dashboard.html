@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}Administrator Control Center - HireSphere{% endblock %}
+
+{% block content %}
+<div class="row align-items-center mb-4">
+    <div class="col-md-8">
+        <span class="badge bg-mint-subtle text-success fw-bold text-uppercase small mb-1">Administrative Module (KTU CSE)</span>
+        <h2 class="fw-bold mb-1"><i class="fas fa-user-shield text-success me-2"></i>Platform Administration & Analytics</h2>
+        <p class="text-muted mb-0">Monitor platform metrics, manage user and company verifications, and moderate live job postings.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="/admin/" target="_blank" class="btn btn-outline-dark"><i class="fas fa-database me-1"></i>Django Admin</a>
+    </div>
+</div>
+
+<!-- High-Level Platform Metric Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card card-custom p-3 border-start border-4 border-success">
+            <div class="small text-muted text-uppercase mb-1">Candidates</div>
+            <div class="fs-3 fw-extrabold text-dark">{{ stats.total_candidates }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card card-custom p-3 border-start border-4 border-primary">
+            <div class="small text-muted text-uppercase mb-1">Companies</div>
+            <div class="fs-3 fw-extrabold text-primary">{{ stats.total_companies }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card card-custom p-3 border-start border-4 border-info">
+            <div class="small text-muted text-uppercase mb-1">Live Jobs</div>
+            <div class="fs-3 fw-extrabold text-info">{{ stats.active_jobs }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card card-custom p-3 border-start border-4 border-warning">
+            <div class="small text-muted text-uppercase mb-1">Applications</div>
+            <div class="fs-3 fw-extrabold text-warning">{{ stats.total_applications }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card card-custom p-3 border-start border-4 border-success">
+            <div class="small text-muted text-uppercase mb-1">Verified Skills</div>
+            <div class="fs-3 fw-extrabold text-success">{{ stats.verified_skills }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card card-custom p-3 border-start border-4 border-secondary">
+            <div class="small text-muted text-uppercase mb-1">Quizzes Taken</div>
+            <div class="fs-3 fw-extrabold text-secondary">{{ stats.quiz_attempts }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs for Candidates, Companies, Jobs -->
+<div class="card card-custom p-4">
+    <ul class="nav nav-pills mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active fw-bold" id="candidates-tab" data-bs-toggle="pill" data-bs-target="#candidates" type="button"><i class="fas fa-users me-1"></i>Job Seekers ({{ candidates.count }})</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link fw-bold" id="companies-tab" data-bs-toggle="pill" data-bs-target="#companies" type="button"><i class="fas fa-building me-1"></i>Companies ({{ companies.count }})</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link fw-bold" id="jobs-tab" data-bs-toggle="pill" data-bs-target="#jobs" type="button"><i class="fas fa-briefcase me-1"></i>Job Postings ({{ jobs.count }})</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="adminTabsContent">
+        <!-- Candidates Tab -->
+        <div class="tab-pane fade show active" id="candidates">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Candidate ID & Name</th>
+                            <th>Email</th>
+                            <th>Education</th>
+                            <th>ATS Score</th>
+                            <th>Verification Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in candidates %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold">{{ c.first_name }} {{ c.last_name|default:c.username }}</div>
+                                <small class="text-muted">{{ c.candidate_id }} &bull; {{ c.experience_years }} yr(s) exp</small>
+                            </td>
+                            <td class="small">{{ c.email }}</td>
+                            <td class="small">{{ c.education|default:"B.Tech CSE" }}</td>
+                            <td>
+                                <span class="badge bg-light text-dark border">{{ c.resume_score }}%</span>
+                            </td>
+                            <td>
+                                {% if c.is_verified %}
+                                    <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Verified</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Unverified</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'admin_panel:toggle_user_verify' c.id %}" class="btn btn-sm {% if c.is_verified %}btn-outline-danger{% else %}btn-outline-success{% endif %}">
+                                    {% if c.is_verified %}Revoke{% else %}Verify{% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="6" class="text-center py-4 text-muted">No candidates registered.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Companies Tab -->
+        <div class="tab-pane fade" id="companies">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Industry</th>
+                            <th>Location</th>
+                            <th>Registered User</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comp in companies %}
+                        <tr>
+                            <td class="fw-bold">{{ comp.name }}</td>
+                            <td><span class="badge bg-light text-dark border">{{ comp.industry }}</span></td>
+                            <td class="small">{{ comp.location }}</td>
+                            <td class="small">{{ comp.user.username }}</td>
+                            <td>
+                                {% if comp.is_verified %}
+                                    <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Approved</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'admin_panel:toggle_company_verify' comp.id %}" class="btn btn-sm {% if comp.is_verified %}btn-outline-secondary{% else %}btn-outline-success{% endif %}">
+                                    {% if comp.is_verified %}Deactivate{% else %}Approve{% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="6" class="text-center py-4 text-muted">No companies registered.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Jobs Tab -->
+        <div class="tab-pane fade" id="jobs">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Company</th>
+                            <th>Type</th>
+                            <th>Applicants</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in jobs %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'jobs:job_detail' j.pk %}" class="fw-bold text-dark text-decoration-none">{{ j.title }}</a>
+                            </td>
+                            <td>{{ j.company.name }}</td>
+                            <td><span class="badge bg-light text-dark border">{{ j.get_job_type_display }}</span></td>
+                            <td><span class="badge bg-mint-subtle text-success">{{ j.applicant_count }}</span></td>
+                            <td>
+                                {% if j.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Closed</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'admin_panel:toggle_job_status' j.id %}" class="btn btn-sm {% if j.is_active %}btn-outline-secondary{% else %}btn-outline-success{% endif %}">
+                                    {% if j.is_active %}Close{% else %}Activate{% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="6" class="text-center py-4 text-muted">No job postings created.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

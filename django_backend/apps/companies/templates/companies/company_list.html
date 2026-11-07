@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Companies & Recruiter Portal - HireSphere{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <!-- Top Hero Section matching Fig 4.6 : Recruiter Access / Elite Recruiters -->
+    <div class="row align-items-center g-5 py-4 py-lg-5 mb-5">
+        <!-- Left Side matching Fig 4.6 -->
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <span class="badge-hs-pill">
+                    <i class="fas fa-crown me-1 text-success"></i>FOR ELITE RECRUITERS
+                </span>
+            </div>
+
+            <!-- Huge Headline with 'industry leaders.' in vibrant green -->
+            <h1 class="display-3 fw-extrabold mb-4" style="line-height: 1.15; letter-spacing: -1.5px; font-weight: 800;">
+                Discover top<br>
+                talent from the<br>
+                <span style="color: #00b848;">industry leaders.</span>
+            </h1>
+
+            <p class="text-secondary lead fs-5 mb-4" style="max-width: 480px; line-height: 1.6;">
+                Connecting elite recruiters with the world's most innovative professionals. Build your high-performance team today.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3">
+                <a href="{% url 'companies:create' %}" class="btn-hs-light">
+                    <i class="fas fa-building me-2"></i>Company Registration
+                </a>
+                <a href="{% url 'companies:create' %}" class="btn-hs-light">
+                    <i class="fas fa-rocket me-2"></i>Startup Registration
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Side: Floating Recruiter Access Login Card matching Fig 4.6 -->
+        <div class="col-lg-6 text-center text-lg-end">
+            <div class="card-hs p-4 p-md-5 text-start shadow-lg border mx-auto ms-lg-auto" style="max-width: 460px; border-radius: 28px;">
+                <h3 class="fw-bold mb-1 text-dark" style="font-size: 1.65rem;">Recruiter Access</h3>
+                <p class="text-muted small mb-4">Log in to manage your job applications and applicant rankings.</p>
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary mb-1">Email Address</label>
+                        <input type="text" name="username" class="form-control form-control-hs" placeholder="hr@tcs.com" value="tcs_demo" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-secondary mb-1">Password</label>
+                        <div class="position-relative">
+                            <input type="password" name="password" id="recruiterPassInput" class="form-control form-control-hs" placeholder="••••••••" value="demo123" required>
+                            <button type="button" class="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted p-2 me-2 shadow-none" onclick="togglePass()">
+                                <i class="fas fa-eye-slash" id="recPassEye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-hs-green w-100 py-3 shadow" style="border-radius: 12px; font-size: 1rem;">
+                        Sign In &rarr;
+                    </button>
+                </form>
+
+                <div class="text-center mt-3 pt-2">
+                    <small class="text-muted">New recruiter? <a href="{% url 'companies:create' %}" class="text-success fw-bold text-decoration-none">Get started</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Companies Directory Section (Fig 4.6 report description) -->
+    <div class="mb-5 pt-3 border-top">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pt-3">
+            <div>
+                <h3 class="fw-bold mb-1 text-dark">Directory of Partner Employers</h3>
+                <p class="text-muted small mb-0">Browse companies by industry and view active vacancies.</p>
+            </div>
+
+            <!-- Search & Industry Filters -->
+            <form method="get" class="d-flex gap-2">
+                <input type="text" name="q" class="form-control form-control-hs" placeholder="Search company name..." value="{{ query }}" style="min-width: 200px;">
+                <select name="industry" class="form-select form-control-hs" style="max-width: 170px;">
+                    <option value="">All Industries</option>
+                    {% for ind in industries %}
+                        <option value="{{ ind }}" {% if selected_industry == ind %}selected{% endif %}>{{ ind }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-hs-green px-3">Search</button>
+            </form>
+        </div>
+
+        <!-- Companies Grid -->
+        <div class="row g-4">
+            {% for company in companies %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card-hs p-4 h-100 d-flex flex-column justify-content-between border shadow-sm">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="company-logo-badge rounded-4 overflow-hidden d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 56px; height: 56px; background: #ffffff; border: 1px solid var(--hs-border); flex-shrink: 0; padding: 6px;">
+                                {% if company.get_logo_url %}
+                                    <img src="{{ company.get_logo_url }}" alt="{{ company.name }} Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                                {% else %}
+                                    <div class="rounded-3 d-flex align-items-center justify-content-center fw-bold text-white" style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--hs-green), #008736); font-size: 1.25rem;">
+                                        {{ company.name|slice:":1" }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">{{ company.name }}</h5>
+                                <span class="badge bg-light text-muted border small">{{ company.industry }}</span>
+                            </div>
+                        </div>
+
+                        <p class="text-muted small mb-3" style="line-height: 1.5;">
+                            {{ company.description|truncatewords:20 }}
+                        </p>
+
+                        <div class="small text-muted mb-3">
+                            <div><i class="fas fa-location-dot text-success me-2"></i>{{ company.location }}</div>
+                            {% if company.employee_count %}
+                                <div><i class="fas fa-users text-success me-2"></i>{{ company.employee_count }} employees</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+                        <span class="text-success fw-bold small"><i class="fas fa-briefcase me-1"></i>{{ company.get_active_jobs_count }} Job(s)</span>
+                        <a href="{% url 'companies:detail' company.pk %}" class="btn-hs-green py-2 px-3 small" style="border-radius: 20px; font-size: 0.85rem;">
+                            View Jobs &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No companies found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePass() {
+    const input = document.getElementById('recruiterPassInput');
+    const eye = document.getElementById('recPassEye');
+    if (input.type === 'password') {
+        input.type = 'text';
+        eye.className = 'fas fa-eye';
+    } else {
+        input.type = 'password';
+        eye.className = 'fas fa-eye-slash';
+    }
+}
+</script>
+{% endblock %}

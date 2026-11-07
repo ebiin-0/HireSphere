@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Sign In - HireSphere{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-4">
+    <div class="col-md-5">
+        <div class="card card-custom p-4 p-md-5 border-start border-4 border-success">
+            <div class="text-center mb-4">
+                <div class="rounded-circle bg-mint-subtle text-success d-inline-flex align-items-center justify-content-center mb-2" style="width: 55px; height: 55px;">
+                    <i class="fas fa-lock fa-lg"></i>
+                </div>
+                <h3 class="fw-bold mb-1">Sign In to HireSphere</h3>
+                <p class="text-muted small">Access your candidate dashboard, assessments, or recruiter portal.</p>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-danger py-2 small shadow-sm">
+                    <i class="fas fa-circle-exclamation me-1"></i>Invalid username or password. Please verify your credentials.
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">{{ form.username|as_crispy_field }}</div>
+                <div class="mb-4">{{ form.password|as_crispy_field }}</div>
+                
+                <button type="submit" class="btn btn-brand w-100 py-2 fs-6 shadow">
+                    <i class="fas fa-right-to-bracket me-2"></i>Sign In
+                </button>
+            </form>
+
+            <div class="text-center mt-4 pt-3 border-top small">
+                <p class="text-muted mb-1">New to HireSphere? <a href="{% url 'users:register' %}" class="text-success fw-bold">Create an account</a></p>
+                <div class="text-muted small mt-2">
+                    <strong>Demo logins:</strong><br>
+                    Candidate: <code>ebin</code> / <code>ebin123</code><br>
+                    Recruiter: <code>tcs_demo</code> / <code>demo123</code><br>
+                    Admin: <code>admin</code> / <code>admin123</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

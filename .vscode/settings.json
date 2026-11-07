@@ -1,0 +1,32 @@
+{
+    "python.defaultInterpreterPath": "C:\\Python314\\python.exe",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/django_backend"
+    ],
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/django_backend"
+    ],
+    "terminal.integrated.cwd": "${workspaceFolder}/django_backend",
+    "files.associations": {
+        "**/templates/**/*.html": "django-html",
+        "*.html": "html"
+    },
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true
+    },
+    "search.exclude": {
+        "**/archives": true,
+        "**/node_modules": true,
+        "**/__pycache__": true
+    }
+}

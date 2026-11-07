@@ -1,0 +1,449 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ user.first_name }} {{ user.last_name|default:user.username }} &mdash; Profile - HireSphere{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row g-4">
+        <!-- ========================================== -->
+        <!-- LEFT COLUMN: Profile Card, Tabs & Privacy (Fig 4.4) -->
+        <!-- ========================================== -->
+        <div class="col-lg-4 col-xl-3">
+            <!-- Profile Card -->
+            <div class="card-hs p-4 text-center mb-4 border">
+                <!-- Large Avatar Circle with Camera Badge -->
+                <div class="position-relative d-inline-block mx-auto mb-3">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" class="rounded-circle border border-3 border-white shadow-sm" width="125" height="125" style="object-fit: cover;" alt="Avatar">
+                    {% else %}
+                        <img src="{% static 'img/alex_avatar.jpg' %}" class="rounded-circle border border-3 border-white shadow-sm" width="125" height="125" style="object-fit: cover;" alt="Avatar" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ user.first_name|default:user.username }}+{{ user.last_name }}&background=00b848&color=fff';">
+                    {% endif %}
+                    
+                    <!-- Green Camera Upload Badge on Bottom-Right (Fig 4.4) -->
+                    <label for="id_profile_picture_quick" class="position-absolute bottom-0 end-0 rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px; background: #00b848; cursor: pointer;" title="Change Photo">
+                        <i class="fas fa-camera fa-xs"></i>
+                    </label>
+                </div>
+
+                <!-- Name and Title -->
+                <h5 class="fw-bold mb-1 text-dark">{{ user.first_name }} {{ user.last_name|default:user.username }}</h5>
+                <p class="small fw-semibold mb-4" style="color: #00b848;">{{ user.headline|default:"Senior Product Designer" }}</p>
+
+                <!-- Sidebar Menu Navigation (Fig 4.4) -->
+                <div class="d-flex flex-column gap-2 text-start">
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-bold border-0 nav-tab-btn active" id="tabBtnOverview" onclick="switchTab('overview')">
+                        <i class="fas fa-grid-2 text-success"></i>Overview
+                    </button>
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-medium border-0 nav-tab-btn text-secondary" id="tabBtnResume" onclick="switchTab('resume')">
+                        <i class="fas fa-file-lines text-muted"></i>Resume Analysis
+                    </button>
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-medium border-0 nav-tab-btn text-secondary" id="tabBtnSkills" onclick="switchTab('skills')">
+                        <i class="fas fa-bullseye text-muted"></i>Skills & Tests
+                    </button>
+                    <button class="btn text-start d-flex align-items-center gap-3 px-3 py-2 rounded-3 fw-medium border-0 nav-tab-btn text-secondary" id="tabBtnEducation" onclick="switchTab('education')">
+                        <i class="fas fa-graduation-cap text-muted"></i>Education
+                    </button>
+                </div>
+            </div>
+
+            <!-- PRIVACY STATUS Box matching Fig 4.4 -->
+            <div class="card-hs p-3 border shadow-sm" style="background: #ffffff; border-radius: 18px;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted fw-bold small" style="font-size: 0.7rem; letter-spacing: 0.5px;">PRIVACY STATUS</span>
+                    <span class="badge-hs-pill small" style="font-size: 0.65rem; padding: 0.2rem 0.6rem;">SHIELD ACTIVE</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-bold text-dark small">Data Masked</div>
+                        <p class="text-muted mb-0" style="font-size: 0.75rem; line-height: 1.4; max-width: 170px;">
+                            Sensitive info like profile pic and scores are hidden from public view.
+                        </p>
+                    </div>
+                    <!-- Toggle Switch -->
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="privacyToggle" checked style="width: 2.4rem; height: 1.25rem; background-color: #00b848; border-color: #00b848;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- RIGHT COLUMN: Content Panes (Fig 4.4 & Fig 4.5) -->
+        <!-- ========================================== -->
+        <div class="col-lg-8 col-xl-9">
+            
+            <!-- SECTION 1: Personal Information & Education Cards (Fig 4.4) -->
+            <div id="sectionOverview">
+                <!-- Personal Information Card matching Fig 4.4 -->
+                <div class="card-hs p-4 p-md-5 mb-4 border shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">Personal Information</h4>
+                        <a href="#editProfileModal" data-bs-toggle="modal" class="text-success text-decoration-none fw-bold small">
+                            <i class="fas fa-pen me-1"></i>Edit Details
+                        </a>
+                    </div>
+                    <p class="text-muted small mb-4">Manage your private and public profile details.</p>
+
+                    <!-- 2x2 Grid of Fields matching Fig 4.4 -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Full Name</span>
+                                <span class="fw-bold text-dark">{{ user.first_name }} {{ user.last_name|default:user.username }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Email Address</span>
+                                <span class="fw-bold text-dark">{{ user.email|default:"alex.rivera@design.co" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Phone Number</span>
+                                    <span class="fw-bold text-dark" id="phoneDisplay">+91 ********45</span>
+                                </div>
+                                <button type="button" class="btn btn-link text-muted p-0 shadow-none" onclick="togglePhoneMask()">
+                                    <i class="fas fa-eye-slash" id="phoneEyeIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <span class="d-block text-muted small fw-bold mb-1" style="font-size: 0.75rem;">Location</span>
+                                <span class="fw-bold text-dark">{{ user.location|default:"San Francisco, CA" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education & Certificates Card matching Fig 4.4 -->
+                <div class="card-hs p-4 p-md-5 mb-4 border shadow-sm">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-success" style="width: 28px; height: 28px; background: #dcf5e7;">
+                            <i class="fas fa-certificate fa-sm"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">Education & Certificates</h4>
+                    </div>
+
+                    <!-- 3 Horizontal Sub-Cards matching Fig 4.4 -->
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">BACHELOR'S DEGREE</span>
+                                    <h6 class="fw-bold mb-2 text-dark">{{ user.education|default:"B.Des Visual Design" }}</h6>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-success fw-bold text-decoration-none small d-inline-flex align-items-center gap-1">
+                                        <i class="fas fa-file-lines"></i> View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">SECONDARY EDUCATION</span>
+                                    <h6 class="fw-bold mb-2 text-dark">Class 12th Certificate</h6>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-success fw-bold text-decoration-none small d-inline-flex align-items-center gap-1">
+                                        <i class="fas fa-file-lines"></i> View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">HIGH SCHOOL</span>
+                                    <h6 class="fw-bold mb-2 text-dark">Class 10th Certificate</h6>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-success fw-bold text-decoration-none small d-inline-flex align-items-center gap-1">
+                                        <i class="fas fa-file-lines"></i> View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION 2: AI Resume Analysis (Fig 4.5) -->
+            <!-- ========================================== -->
+            <div id="sectionResume" class="mb-4">
+                <div class="card-hs p-4 p-md-5 mb-4 border shadow-sm">
+                    <!-- Section Header with Leaf/AI Icon matching Fig 4.5 -->
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-success" style="width: 28px; height: 28px; background: #dcf5e7;">
+                            <i class="fas fa-leaf fa-sm"></i>
+                        </div>
+                        <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">AI Resume Analysis</h4>
+                    </div>
+
+                    <div class="row g-4">
+                        <!-- Left Box: Update Resume (Upload Area matching Fig 4.5) -->
+                        <div class="col-lg-7">
+                            <form method="post" action="{% url 'users:analyze_resume' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="p-4 text-center rounded-4 border border-dashed mb-3" style="background-color: #f7fcf9; border-color: #a3e6be !important;">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 48px; height: 48px; background: #dcf5e7; color: #00b848;">
+                                        <i class="fas fa-cloud-arrow-up fa-lg"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Update Resume</h6>
+                                    <p class="text-muted small mb-3">Drag and drop your PDF or DOCX here</p>
+
+                                    <input type="file" name="resume" id="resumeFileInput" class="d-none" accept=".pdf" onchange="this.form.submit()">
+                                    <button type="button" class="btn-hs-green px-4 py-2" onclick="document.getElementById('resumeFileInput').click();">
+                                        Browse Files
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Attached File Card matching Fig 4.5 -->
+                            <div class="p-3 rounded-3 bg-light border d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="text-success fs-3">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark small text-truncate" style="max-width: 260px;">
+                                            {{ user.resume.name|default:"Alex_Rivera_Design_Resume_2024.pdf" }}
+                                        </div>
+                                        <span class="text-muted text-uppercase" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;">
+                                            UPLOADED OCT 12, 2024
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    {% if user.resume %}
+                                        <a href="{{ user.resume.url }}" target="_blank" class="btn btn-sm btn-link text-success p-0 fw-bold">View</a>
+                                    {% endif %}
+                                    <button class="btn btn-link text-muted p-0 shadow-none"><i class="fas fa-trash-can"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Box: RESUME QUALITY SCORE Circular Gauge matching Fig 4.5 -->
+                        <div class="col-lg-5">
+                            <div class="p-4 rounded-4 bg-light border text-center h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="text-muted fw-bold d-block mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">RESUME QUALITY SCORE</span>
+
+                                    <!-- Circular Gauge -->
+                                    <div class="position-relative d-inline-block mx-auto mb-3" style="width: 140px; height: 140px;">
+                                        <svg width="140" height="140" viewBox="0 0 140 140">
+                                            <circle cx="70" cy="70" r="54" fill="none" stroke="#e1f5eb" stroke-width="12"/>
+                                            <circle cx="70" cy="70" r="54" fill="none" stroke="#00b848" stroke-width="12"
+                                                    stroke-dasharray="339.29"
+                                                    stroke-dashoffset="50.89"
+                                                    stroke-linecap="round"
+                                                    transform="rotate(-90 70 70)"/>
+                                        </svg>
+                                        <div class="position-absolute top-50 start-50 translate-middle text-center" style="line-height: 1;">
+                                            <div class="fw-extrabold text-dark" style="font-size: 1.85rem;">{{ user.resume_score|default:"85" }}%</div>
+                                            <div class="fw-bold mt-1" style="font-size: 0.7rem; color: #00b848; letter-spacing: 0.5px;">EXCELLENT</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Checklist items matching Fig 4.5 -->
+                                <div class="text-start small mt-2 ps-2">
+                                    <div class="mb-2 d-flex align-items-center gap-2">
+                                        <span class="rounded-circle" style="width: 8px; height: 8px; background-color: #00b848;"></span>
+                                        <span class="text-dark fw-medium" style="font-size: 0.8rem;">ATS Keyword Optimized</span>
+                                    </div>
+                                    <div class="mb-2 d-flex align-items-center gap-2">
+                                        <span class="rounded-circle" style="width: 8px; height: 8px; background-color: #00b848;"></span>
+                                        <span class="text-dark fw-medium" style="font-size: 0.8rem;">Clear Action Verbs</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="rounded-circle border" style="width: 8px; height: 8px; background-color: #f59e0b;"></span>
+                                        <span class="text-dark fw-medium" style="font-size: 0.8rem;">Add Portfolio Link</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: Verified Skills & Assessments (Fig 4.5) -->
+                <div class="card-hs p-4 p-md-5 border shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-success" style="width: 28px; height: 28px; background: #dcf5e7;">
+                                <i class="fas fa-circle-check fa-sm"></i>
+                            </div>
+                            <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.35rem;">Verified Skills & Assessments</h4>
+                        </div>
+                        <span class="badge bg-light text-muted border text-uppercase px-2 py-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">PUBLICLY MASKED</span>
+                    </div>
+
+                    <!-- 4 Assessment Cards matching Fig 4.5 2x2 grid -->
+                    <div class="row g-3">
+                        <!-- Card 1: UI/UX Design -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-success" style="width: 32px; height: 32px; background: #dcf5e7;">
+                                            <i class="fas fa-layer-group fa-sm"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-0 text-dark">UI/UX Design</h6>
+                                    </div>
+                                    <span class="text-muted fw-bold small" style="font-size: 0.7rem;">SCORE: 88/100</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; background-color: #e5e7eb;">
+                                    <div class="progress-bar" role="progressbar" style="width: 88%; background-color: #00b848;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Frontend Dev (React) -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-success" style="width: 32px; height: 32px; background: #dcf5e7;">
+                                            <i class="fas fa-code fa-sm"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-0 text-dark">Frontend Dev (React)</h6>
+                                    </div>
+                                    <span class="text-muted fw-bold small" style="font-size: 0.7rem;">SCORE: 82/100</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; background-color: #e5e7eb;">
+                                    <div class="progress-bar" role="progressbar" style="width: 82%; background-color: #00b848;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Product Strategy -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-4 bg-light border h-100 d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-success" style="width: 32px; height: 32px; background: #dcf5e7;">
+                                            <i class="fas fa-chart-pie fa-sm"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-0 text-dark">Product Strategy</h6>
+                                    </div>
+                                    <span class="text-muted fw-bold small" style="font-size: 0.7rem;">SCORE: 90/100</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; background-color: #e5e7eb;">
+                                    <div class="progress-bar" role="progressbar" style="width: 90%; background-color: #00b848;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Take New Assessment matching Fig 4.5 -->
+                        <div class="col-md-6">
+                            <a href="{% url 'users:quiz_catalog' %}" class="p-3 rounded-4 bg-light border text-decoration-none d-flex align-items-center gap-3 h-100 hover-card">
+                                <div class="rounded-3 d-inline-flex align-items-center justify-content-center text-secondary" style="width: 36px; height: 36px; background: #e2e8f0;">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark">Take New Assessment</h6>
+                                    <small class="text-muted">Boost your profile visibility</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-bottom px-4 pt-4">
+                <h5 class="modal-title fw-bold text-dark"><i class="fas fa-user-pen text-success me-2"></i>Edit Profile Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">{{ form.first_name|as_crispy_field }}</div>
+                        <div class="col-md-6">{{ form.last_name|as_crispy_field }}</div>
+                        <div class="col-md-6">{{ form.email|as_crispy_field }}</div>
+                        <div class="col-md-6">{{ form.phone|as_crispy_field }}</div>
+                        <div class="col-12">{{ form.headline|as_crispy_field }}</div>
+                        <div class="col-md-8">{{ form.education|as_crispy_field }}</div>
+                        <div class="col-md-4">{{ form.location|as_crispy_field }}</div>
+                        <div class="col-12">{{ form.skills|as_crispy_field }}</div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 pb-4">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-hs-green px-4">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.nav-tab-btn {
+    transition: all 0.2s ease;
+}
+.nav-tab-btn:hover {
+    background-color: #eaf7ef !important;
+    color: #00b848 !important;
+}
+.nav-tab-btn.active {
+    background-color: #dcf5e7 !important;
+    color: #007a33 !important;
+}
+.hover-card {
+    transition: all 0.2s ease;
+}
+.hover-card:hover {
+    background-color: #f1f8f4 !important;
+    border-color: #00b848 !important;
+}
+</style>
+
+<script>
+let phoneMasked = true;
+const actualPhone = "{{ user.phone|default:'+91 94471 23456' }}";
+
+function togglePhoneMask() {
+    const display = document.getElementById('phoneDisplay');
+    const icon = document.getElementById('phoneEyeIcon');
+    if (phoneMasked) {
+        display.textContent = actualPhone;
+        icon.className = "fas fa-eye";
+        phoneMasked = false;
+    } else {
+        display.textContent = "+91 ********45";
+        icon.className = "fas fa-eye-slash";
+        phoneMasked = true;
+    }
+}
+
+function switchTab(tab) {
+    document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+    if (tab === 'overview' || tab === 'education') {
+        document.getElementById('tabBtnOverview').classList.add('active');
+        document.getElementById('sectionOverview').style.display = 'block';
+        document.getElementById('sectionResume').style.display = 'block';
+    } else if (tab === 'resume' || tab === 'skills') {
+        document.getElementById('tabBtnResume').classList.add('active');
+        document.getElementById('sectionOverview').style.display = 'none';
+        document.getElementById('sectionResume').style.display = 'block';
+    }
+}
+</script>
+{% endblock %}
