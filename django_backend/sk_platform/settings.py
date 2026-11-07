@@ -32,6 +32,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+try:
+    import whitenoise
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+except ImportError:
+    pass
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'https://*.up.railway.app',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
+
 ROOT_URLCONF = 'sk_platform.urls'
 WSGI_APPLICATION = 'sk_platform.wsgi.application'
 

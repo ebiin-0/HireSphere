@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hiresphere
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn --chdir django_backend sk_platform.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "True"
