@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireSphere - Candidate Registration Portal</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --hs-green: #00b848;
+            --hs-green-hover: #009e3e;
+            --hs-green-light: #dcf5e7;
+            --hs-bg: #f3f8f5;
+            --hs-card-bg: #ffffff;
+            --hs-dark: #111827;
+            --hs-text-muted: #6b7280;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--hs-bg);
+            color: var(--hs-dark);
+            min-height: 100vh;
+        }
+
+        .navbar-brand-hs {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--hs-dark) !important;
+            letter-spacing: -0.5px;
+        }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #00b848 0%, #009e3e 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.15rem;
+            box-shadow: 0 4px 12px rgba(0, 184, 72, 0.28);
+        }
+
+        .card-hs {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .form-control-hs {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .form-control-hs:focus {
+            border-color: var(--hs-green);
+            box-shadow: 0 0 0 3px rgba(0, 184, 72, 0.15);
+            outline: none;
+        }
+
+        .btn-hs-green {
+            background-color: var(--hs-green);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 0.75rem 2rem;
+            border: none;
+            box-shadow: 0 4px 14px rgba(0, 184, 72, 0.25);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        
+        
+    </style>
+</head>
+<body>
+
+
+
+
+<div class="container py-4">
+    <!-- Navbar matching Fig 4.3 -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <a class="navbar-brand-hs" href="home.html">
+            <div class="logo-icon"><i class="fas fa-cube"></i></div>
+            <span>HireSphere</span>
+        </a>
+        <a href="home.html" class="text-secondary text-decoration-none small fw-semibold">
+            <i class="fas fa-arrow-left me-1"></i>Back to Home
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <div class="mb-5">
+                <h1 class="fw-bold mb-2 text-dark" style="font-size: 2.25rem; letter-spacing: -0.5px;">Candidate Registration Portal</h1>
+                <p class="text-secondary fs-6 mb-0">Complete your profile and verify your skills to join the HireSphere network.</p>
+            </div>
+
+            <!-- Card matching Fig 4.3 -->
+            <div class="card-hs p-4 p-md-5 mb-5 shadow-sm border">
+                <!-- Step 01: Personal Profile -->
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <span class="rounded-pill px-2 py-1 text-white fw-bold small" style="background-color: #00b848; font-size: 0.8rem;">01</span>
+                    <h4 class="fw-bold mb-0 text-dark" style="font-size: 1.25rem;">Personal Profile</h4>
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-secondary mb-1">First Name</label>
+                        <input type="text" class="form-control form-control-hs" placeholder="John">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-secondary mb-1">Last Name</label>
+                        <input type="text" class="form-control form-control-hs" placeholder="Doe">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-secondary mb-1">Email Address</label>
+                        <input type="email" class="form-control form-control-hs" placeholder="john.doe@example.com">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-secondary mb-1">Phone Number</label>
+                        <input type="text" class="form-control form-control-hs" placeholder="+1 (555) 000-0000">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-secondary mb-1">Password</label>
+                        <input type="password" class="form-control form-control-hs" placeholder="••••••••">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-secondary mb-1">Confirm Password</label>
+                        <input type="password" class="form-control form-control-hs" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <!-- Step 02: Academic Credentials -->
+                <div class="d-flex align-items-center gap-2 mb-4 pt-2 border-top">
+                    <span class="rounded-pill px-2 py-1 text-white fw-bold small mt-3" style="background-color: #00b848; font-size: 0.8rem;">02</span>
+                    <h4 class="fw-bold mb-0 text-dark mt-3" style="font-size: 1.25rem;">Academic Credentials</h4>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-8">
+                        <label class="form-label small fw-bold text-secondary mb-1">Highest Degree / Specialization</label>
+                        <input type="text" class="form-control form-control-hs" placeholder="e.g. B.Tech in Computer Science and Engineering">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-bold text-secondary mb-1">Years of Experience</label>
+                        <input type="number" class="form-control form-control-hs" placeholder="0" min="0" value="0">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold text-secondary mb-1">Key Technical Skills (Comma-separated)</label>
+                        <input type="text" class="form-control form-control-hs" placeholder="e.g. Python, SQL, React, Django, Docker">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center pt-3">
+                    <span class="small text-muted">Already registered? <a href="companies.html" class="text-success fw-bold text-decoration-none">Log In</a></span>
+                    <a href="profile.html" class="btn-hs-green px-5 py-3 shadow" style="font-size: 1rem;">
+                        Complete Registration &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

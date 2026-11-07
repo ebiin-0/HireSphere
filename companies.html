@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireSphere - For Elite Recruiters</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --hs-green: #00b848;
+            --hs-green-hover: #009e3e;
+            --hs-green-light: #dcf5e7;
+            --hs-green-dark: #005a26;
+            --hs-bg: #f3f8f5;
+            --hs-card-bg: #ffffff;
+            --hs-dark: #111827;
+            --hs-text-muted: #6b7280;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--hs-bg);
+            color: var(--hs-dark);
+            min-height: 100vh;
+        }
+
+        .navbar-brand-hs {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--hs-dark) !important;
+            letter-spacing: -0.5px;
+        }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #00b848 0%, #009e3e 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.15rem;
+            box-shadow: 0 4px 12px rgba(0, 184, 72, 0.28);
+        }
+
+        .btn-hs-light {
+            background-color: var(--hs-green-light);
+            color: var(--hs-green-dark) !important;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 0.55rem 1.4rem;
+            border: 1px solid rgba(0, 184, 72, 0.2);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-hs-green {
+            background-color: var(--hs-green);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 14px;
+            padding: 0.75rem 1.6rem;
+            border: none;
+            box-shadow: 0 4px 14px rgba(0, 184, 72, 0.25);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-hs {
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .badge-hs-pill {
+            background-color: var(--hs-green-light);
+            color: #007a33;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0.4rem 0.9rem;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .form-control-hs {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+        }
+        .form-control-hs:focus {
+            border-color: var(--hs-green);
+            box-shadow: 0 0 0 3px rgba(0, 184, 72, 0.15);
+            outline: none;
+        }
+        
+        
+        
+
+        /* Back to Top Button */
+        .back-to-top-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 0.45rem 1rem;
+            border-radius: 25px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .back-to-top-btn:hover {
+            background: var(--hs-green);
+            color: #ffffff;
+            border-color: var(--hs-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0, 184, 72, 0.35);
+        }
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .back-to-top-btn:hover {
+            background: var(--hs-green);
+            color: #ffffff;
+            border-color: var(--hs-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0, 184, 72, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+
+
+
+<div class="container py-4">
+    <!-- Navbar matching Fig 4.6 -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <a class="navbar-brand-hs" href="home.html">
+            <div class="logo-icon"><i class="fas fa-cube"></i></div>
+            <span>HireSphere</span>
+        </a>
+        <div class="d-flex gap-3">
+            <a href="register.html" class="btn-hs-light">Company Registration</a>
+            <a href="register.html" class="btn-hs-light">Startup Registration</a>
+        </div>
+    </div>
+
+    <!-- Hero Section matching Fig 4.6 -->
+    <div class="row align-items-center g-5 py-4">
+        <!-- Left Side matching Fig 4.6 -->
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <span class="badge-hs-pill">
+                    <i class="fas fa-crown me-1 text-success"></i>FOR ELITE RECRUITERS
+                </span>
+            </div>
+
+            <h1 class="display-3 fw-extrabold mb-4" style="line-height: 1.15; letter-spacing: -1.5px; font-weight: 800;">
+                Discover top<br>
+                talent from the<br>
+                <span style="color: #00b848;">industry leaders.</span>
+            </h1>
+
+            <p class="text-secondary lead fs-5 mb-4" style="max-width: 480px; line-height: 1.6;">
+                Connecting elite recruiters with the world's most innovative professionals. Build your high-performance team today.
+            </p>
+        </div>
+
+        <!-- Right Side: Floating Recruiter Access Card matching Fig 4.6 -->
+        <div class="col-lg-6 text-center text-lg-end">
+            <div class="card-hs p-4 p-md-5 text-start shadow-lg border mx-auto ms-lg-auto" style="max-width: 460px;">
+                <h3 class="fw-bold mb-1 text-dark" style="font-size: 1.65rem;">Recruiter Access</h3>
+                <p class="text-muted small mb-4">Log in to manage your job applications.</p>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-secondary mb-1">Email Address</label>
+                    <input type="email" class="form-control form-control-hs" placeholder="hr@tcs.com" value="hr@tcs.com">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-secondary mb-1">Password</label>
+                    <div class="position-relative">
+                        <input type="password" class="form-control form-control-hs" value="password123">
+                        <span class="position-absolute top-50 end-0 translate-middle-y text-muted me-3">
+                            <i class="fas fa-eye-slash"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <a href="profile.html" class="btn-hs-green w-100 py-3 shadow" style="font-size: 1rem;">
+                    Sign In &rarr;
+                </a>
+
+                <div class="text-center mt-3 pt-2">
+                    <small class="text-muted">New recruiter? <a href="register.html" class="text-success fw-bold text-decoration-none">Get started</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Companies Directory Section (Directory of Partner Employers) -->
+    <div class="mb-5 pt-4 border-top">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pt-3">
+            <div>
+                <h3 class="fw-bold mb-1 text-dark">Directory of Partner Employers</h3>
+                <p class="text-muted small mb-0">Browse companies by industry and view active vacancies.</p>
+            </div>
+
+            <!-- Search & Industry Filters -->
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control form-control-hs" placeholder="Search company name..." style="min-width: 200px;">
+                <select class="form-select form-control-hs" style="max-width: 170px;">
+                    <option value="">All Industries</option>
+                    <option value="IT Services">IT Services</option>
+                    <option value="Software Products">Software Products</option>
+                    <option value="Software & IT Consulting">Software & IT Consulting</option>
+                </select>
+                <button type="button" class="btn-hs-green px-3">Search</button>
+            </div>
+        </div>
+
+        <!-- Companies Grid -->
+        <div class="row g-4">
+            <!-- TCS -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-hs p-4 h-100 d-flex flex-column justify-content-between border shadow-sm">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="company-logo-badge rounded-4 overflow-hidden d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 56px; height: 56px; background: #ffffff; border: 1px solid #e2e8f0; flex-shrink: 0; padding: 6px;">
+                                <img src="img/company_logos/tcs.svg" alt="Tata Consultancy Services Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">Tata Consultancy Services (TCS)</h5>
+                                <span class="badge bg-light text-muted border small">IT Services &amp; Consulting</span>
+                            </div>
+                        </div>
+
+                        <p class="text-muted small mb-3" style="line-height: 1.5;">
+                            Global leader in IT services, consulting &amp; business solutions partnering with the world's largest businesses.
+                        </p>
+
+                        <div class="small text-muted mb-3">
+                            <div><i class="fas fa-location-dot text-success me-2"></i>Mumbai &amp; Kochi, India</div>
+                            <div><i class="fas fa-users text-success me-2"></i>600,000+ employees</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+                        <span class="text-success fw-bold small"><i class="fas fa-briefcase me-1"></i>5 Job(s)</span>
+                        <a href="index.html#jobs" class="btn-hs-green py-2 px-3 small" style="border-radius: 20px; font-size: 0.85rem;">
+                            View Jobs &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intileo Technologies -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-hs p-4 h-100 d-flex flex-column justify-content-between border shadow-sm">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="company-logo-badge rounded-4 overflow-hidden d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 56px; height: 56px; background: #ffffff; border: 1px solid #e2e8f0; flex-shrink: 0; padding: 6px;">
+                                <img src="img/company_logos/intileo.svg" alt="Intileo Technologies Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">Intileo Technologies</h5>
+                                <span class="badge bg-light text-muted border small">Software Products</span>
+                            </div>
+                        </div>
+
+                        <p class="text-muted small mb-3" style="line-height: 1.5;">
+                            Innovative engineering company building cutting-edge enterprise cloud, AI, and web platforms.
+                        </p>
+
+                        <div class="small text-muted mb-3">
+                            <div><i class="fas fa-location-dot text-success me-2"></i>Kochi &amp; Hyderabad, India</div>
+                            <div><i class="fas fa-users text-success me-2"></i>500–1000 employees</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+                        <span class="text-success fw-bold small"><i class="fas fa-briefcase me-1"></i>5 Job(s)</span>
+                        <a href="index.html#jobs" class="btn-hs-green py-2 px-3 small" style="border-radius: 20px; font-size: 0.85rem;">
+                            View Jobs &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Infosys Limited -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-hs p-4 h-100 d-flex flex-column justify-content-between border shadow-sm">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="company-logo-badge rounded-4 overflow-hidden d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 56px; height: 56px; background: #ffffff; border: 1px solid #e2e8f0; flex-shrink: 0; padding: 6px;">
+                                <img src="img/company_logos/infosys.svg" alt="Infosys Limited Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">Infosys Limited</h5>
+                                <span class="badge bg-light text-muted border small">Software &amp; IT Consulting</span>
+                            </div>
+                        </div>
+
+                        <p class="text-muted small mb-3" style="line-height: 1.5;">
+                            Global leader in next-generation digital services and consulting helping enterprises navigate digital transformation.
+                        </p>
+
+                        <div class="small text-muted mb-3">
+                            <div><i class="fas fa-location-dot text-success me-2"></i>Bengaluru &amp; Thiruvananthapuram, India</div>
+                            <div><i class="fas fa-users text-success me-2"></i>320,000+ employees</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+                        <span class="text-success fw-bold small"><i class="fas fa-briefcase me-1"></i>4 Job(s)</span>
+                        <a href="index.html#jobs" class="btn-hs-green py-2 px-3 small" style="border-radius: 20px; font-size: 0.85rem;">
+                            View Jobs &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Meaningful Quote & Clean Minimalist Footer -->
+<footer style="background-color: #0b1120; border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 26px 0 20px 0; margin-top: 4rem; position: relative; z-index: 10;">
+    <div class="container">
+        <!-- Meaningful Career Inspiration Quote -->
+        <div class="text-center mb-3 pb-3 border-bottom border-secondary border-opacity-25">
+            <p class="fst-italic text-white-50 mb-1" style="font-size: 0.95rem; font-weight: 500;">
+                <i class="fas fa-quote-left text-success me-2" style="opacity: 0.7;"></i>
+                <span id="footerCareerQuote">"The future depends on what you do today."</span>
+                <i class="fas fa-quote-right text-success ms-2" style="opacity: 0.7;"></i>
+            </p>
+            <span class="small text-white-50" style="opacity: 0.65;" id="footerCareerAuthor">&mdash; Mahatma Gandhi</span>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <div class="fw-bold text-white fs-5" style="letter-spacing: -0.3px;">HireSphere</div>
+                <div class="text-white-50 small">&copy; 2025 HireSphere.&nbsp;&nbsp;&nbsp;&nbsp;Academic project.</div>
+            </div>
+            <div>
+                <button type="button" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Back to Top">
+                    <span>Back to Top</span>
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    (function initFooterQuotes() {
+        const careerQuotes = [
+            { quote: "The future depends on what you do today.", author: "Mahatma Gandhi" },
+            { quote: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { quote: "Opportunities don't happen, you create them.", author: "Chris Grosser" },
+            { quote: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+            { quote: "Your talent determines what you can do. Your motivation determines how much you are willing to do.", author: "Lou Holtz" },
+            { quote: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+            { quote: "It always seems impossible until it's done.", author: "Nelson Mandela" }
+        ];
+        const qEl = document.getElementById('footerCareerQuote');
+        const aEl = document.getElementById('footerCareerAuthor');
+        if (qEl && aEl) {
+            const randomQ = careerQuotes[Math.floor(Math.random() * careerQuotes.length)];
+            qEl.textContent = `"${randomQ.quote}"`;
+            aEl.innerHTML = `&mdash; ${randomQ.author}`;
+        }
+    })();
+</script>
+</body>
+</html>

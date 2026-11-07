@@ -1,117 +1,1898 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HireSphere - Project Gateway</title>
+    <title>HireSphere - A simpler way to move your career forward</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Three.js for Interactive 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
+        :root {
+            --hs-green: #00b848;
+            --hs-green-hover: #009e3e;
+            --hs-green-light: #dcf5e7;
+            --hs-green-dark: #005a26;
+            --hs-green-glow: rgba(0, 184, 72, 0.35);
+            --hs-bg: #f7fbf8;
+            --hs-card-bg: #ffffff;
+            --hs-card-elevated: #ffffff;
+            --hs-dark: #0f172a;
+            --hs-text-muted: #64748b;
+            --hs-border: #e2e8f0;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --card-shadow-3d: 0 22px 50px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0,0,0,0.05);
+            --search-bg: #ffffff;
+            --footer-bg: #0b1120;
+        }
+
+        [data-theme="dark"] {
+            --hs-green: #00e676;
+            --hs-green-hover: #00c853;
+            --hs-green-light: rgba(0, 230, 118, 0.15);
+            --hs-green-dark: #00e676;
+            --hs-green-glow: rgba(0, 230, 118, 0.5);
+            --hs-bg: #080c14;
+            --hs-card-bg: #0e1626;
+            --hs-card-elevated: #131d33;
+            --hs-dark: #f8fafc;
+            --hs-text-muted: #94a3b8;
+            --hs-border: #1e293b;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --card-shadow-3d: 0 28px 55px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 230, 118, 0.15);
+            --search-bg: #0f172a;
+            --footer-bg: #050811;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #080c14;
-            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--hs-bg);
+            color: var(--hs-dark);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s ease;
+            overflow-x: hidden;
+        }
+
+        
+        
+        
+
+        /* Ultra-Modern Frosted Glass Header Navbar */
+        .navbar-hs {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            padding: 0.85rem 0;
+            background: rgba(247, 251, 248, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        [data-theme="dark"] .navbar-hs {
+            background: rgba(8, 12, 20, 0.82);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+        }
+        .navbar-hs.scrolled {
+            padding: 0.65rem 0;
+            background: rgba(247, 251, 248, 0.94);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border-bottom-color: rgba(0, 184, 72, 0.15);
+        }
+        [data-theme="dark"] .navbar-hs.scrolled {
+            background: rgba(8, 12, 20, 0.94);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 25px rgba(0, 230, 118, 0.06);
+            border-bottom-color: rgba(0, 230, 118, 0.15);
+        }
+        .navbar-brand-hs {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--hs-dark) !important;
+            letter-spacing: -0.5px;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .navbar-brand-hs:hover {
+            transform: scale(1.02);
+        }
+        .navbar-brand-hs .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--hs-green) 0%, var(--hs-green-hover) 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            color: #ffffff;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 16px var(--hs-green-glow);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .portal-card {
-            background: #0e1626;
-            border: 1px solid #1e293b;
+        .navbar-brand-hs .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: linear-gradient(60deg, transparent 35%, rgba(255,255,255,0.45) 50%, transparent 65%);
+            transform: rotate(25deg);
+            transition: transform 0.6s ease;
+        }
+        .navbar-brand-hs:hover .logo-icon {
+            transform: rotate(10deg) scale(1.08);
+        }
+        .navbar-brand-hs:hover .logo-icon::after {
+            transform: rotate(25deg) translate(30%, 30%);
+        }
+        .nav-link-hs {
+            color: var(--hs-text-muted) !important;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 0.5rem 1rem !important;
             border-radius: 24px;
-            max-width: 580px;
-            width: 100%;
-            padding: 40px 36px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 230, 118, 0.1);
+            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            position: relative;
+            text-decoration: none;
         }
-        .logo-box {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #00e676 0%, #00a843 100%);
+        .nav-link-hs i {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .nav-link-hs:hover {
+            color: var(--hs-green) !important;
+            background: var(--hs-green-light);
+            transform: translateY(-1px);
+        }
+        .nav-link-hs:hover i {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+        .nav-link-hs.active {
+            color: var(--hs-green) !important;
+            background: var(--hs-green-light);
+            font-weight: 700;
+            box-shadow: 0 2px 8px var(--hs-green-glow);
+        }
+        .nav-link-hs.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: var(--hs-green);
+            border-radius: 50%;
+        }
+
+        /* Global Silk Smooth Theme Transition */
+        body, 
+        .card-hs, 
+        .card-custom, 
+        .feature-card-hs, 
+        .job-card-hs, 
+        .pill-search-box, 
+        .navbar-hs, 
+        footer {
+            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        color 0.4s ease,
+                        border-color 0.4s ease,
+                        box-shadow 0.4s ease;
+        }
+
+        /* Professional Theme Switch Pill with Perfect Micro-Animation */
+        .theme-switch-pill {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            user-select: none;
+            border-radius: 30px;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .theme-switch-pill:hover {
+            transform: scale(1.04);
+        }
+        .theme-switch-pill:active .theme-switch-thumb {
+            transform: scale(0.88);
+        }
+        [data-theme="dark"] .theme-switch-pill:active .theme-switch-thumb {
+            transform: translateX(25px) scale(0.88);
+        }
+        .theme-switch-track {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 30px;
+            padding: 2px 3px;
+            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.4s ease, 
+                        box-shadow 0.4s ease;
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--hs-border);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        [data-theme="dark"] .theme-switch-track {
+            background: #1e293b;
+            border-color: #334155;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+        .theme-switch-thumb {
+            width: 24px;
+            height: 24px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16), 0 0 1px rgba(0,0,0,0.1);
+            transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), 
+                        background-color 0.35s ease, 
+                        box-shadow 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            transform: translateX(1px);
+        }
+        [data-theme="dark"] .theme-switch-thumb {
+            transform: translateX(25px);
+            background: #0f172a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 12px rgba(56, 189, 248, 0.45);
+        }
+        .theme-switch-thumb .icon-sun,
+        .theme-switch-thumb .icon-moon {
+            position: absolute;
+            font-size: 11.5px;
+            transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), 
+                        opacity 0.28s ease, 
+                        filter 0.3s ease;
+        }
+        :root:not([data-theme="dark"]) .icon-sun {
+            color: #f59e0b;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.6));
+        }
+        :root:not([data-theme="dark"]) .icon-moon {
+            color: #38bdf8;
+            opacity: 0;
+            transform: scale(0.2) rotate(-135deg);
+        }
+        [data-theme="dark"] .icon-sun {
+            color: #f59e0b;
+            opacity: 0;
+            transform: scale(0.2) rotate(135deg);
+        }
+        [data-theme="dark"] .icon-moon {
+            color: #38bdf8;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.7));
+        }
+        .theme-switch-pill:hover .theme-switch-track {
+            border-color: var(--hs-green);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08), 0 0 10px var(--hs-green-glow);
+        }
+
+        /* Staggered Professional Entrance Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .delay-1 { animation-delay: 0.08s; }
+        .delay-2 { animation-delay: 0.18s; }
+        .delay-3 { animation-delay: 0.28s; }
+        .delay-4 { animation-delay: 0.38s; }
+        .delay-5 { animation-delay: 0.48s; }
+
+        /* Subtle Live Radar Pulse */
+        @keyframes liveRadarPulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 184, 72, 0.6);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 7px rgba(0, 184, 72, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 184, 72, 0);
+            }
+        }
+        .live-radar-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--hs-green);
+            border-radius: 50%;
+            display: inline-block;
+            animation: liveRadarPulse 2.2s infinite;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* 3D Depth Card Tilt & Specular Glare */
+        .tilt-card-3d {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.25s ease, border-color 0.25s ease;
+            will-change: transform;
+            position: relative;
+        }
+        .tilt-card-3d:hover {
+            box-shadow: var(--card-shadow-3d) !important;
+            border-color: var(--hs-green) !important;
+        }
+        .card-glare-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            mix-blend-mode: overlay;
+            z-index: 5;
+        }
+
+        /* Breathing Animations */
+        @keyframes breatheOrb {
+            0%, 100% {
+                transform: scale(1) translate(0px, 0px) rotate(0deg);
+                opacity: 0.45;
+            }
+            50% {
+                transform: scale(1.22) translate(25px, -20px) rotate(180deg);
+                opacity: 0.75;
+            }
+        }
+        @keyframes breathePulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 var(--hs-green-glow), 0 10px 30px rgba(0,0,0,0.06);
+            }
+            50% {
+                box-shadow: 0 0 25px 6px var(--hs-green-glow), 0 15px 40px rgba(0,0,0,0.12);
+            }
+        }
+        .breathing-pulse {
+            animation: breathePulse 3.5s ease-in-out infinite;
+        }
+
+        /* Ambient 3D background orbs */
+        .bg-ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(75px);
+            pointer-events: none;
+            z-index: 0;
+            animation: breatheOrb 8s ease-in-out infinite alternate;
+        }
+        .orb-1 {
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, var(--hs-green-glow) 0%, rgba(0, 184, 72, 0) 70%);
+            top: -40px;
+            right: 5%;
+        }
+        .orb-2 {
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(56, 189, 248, 0) 70%);
+            top: 220px;
+            left: 2%;
+            animation-delay: -4s;
+        }
+
+        /* Overall Full-Screen 3D Celestial Background Canvas */
+        .overall-3d-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        #career3DCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Elegant Frosted Glass Cards so 3D Celestial Sphere & Particles show through */
+        .card-hs, 
+        .card-custom, 
+        .feature-card-hs, 
+        .job-card-hs, 
+        .pill-search-box {
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        :root:not([data-theme="dark"]) .card-hs, 
+        :root:not([data-theme="dark"]) .card-custom, 
+        :root:not([data-theme="dark"]) .feature-card-hs, 
+        :root:not([data-theme="dark"]) .job-card-hs, 
+        :root:not([data-theme="dark"]) .pill-search-box {
+            background-color: rgba(255, 255, 255, 0.88) !important;
+        }
+        [data-theme="dark"] .card-hs, 
+        [data-theme="dark"] .card-custom, 
+        [data-theme="dark"] .feature-card-hs, 
+        [data-theme="dark"] .job-card-hs, 
+        [data-theme="dark"] .pill-search-box {
+            background-color: rgba(14, 22, 38, 0.84) !important;
+        }
+
+        /* Floating Pill Search Bar matching Screenshot */
+        .pill-search-wrapper {
+            position: relative;
+            z-index: 2;
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+        }
+        .pill-search-box {
+            background: var(--search-bg);
+            border-radius: 50px;
+            padding: 8px 10px 8px 26px;
+            border: 1px solid var(--hs-border);
+            max-width: 660px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        }
+        .pill-search-box:focus-within {
+            border-color: var(--hs-green);
+            box-shadow: 0 18px 45px var(--hs-green-glow);
+            transform: translateY(-3px) scale(1.015);
+        }
+        .pill-field {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
+        }
+        .pill-input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: var(--hs-dark);
+            width: 100%;
+            font-weight: 500;
+        }
+        .pill-input::placeholder {
+            color: var(--hs-text-muted);
+            font-weight: 400;
+        }
+        .pill-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--hs-border);
+            flex-shrink: 0;
+        }
+
+        /* 3D Tactile Buttons with Realistic Depth Press */
+        .btn-pill-search {
+            background-color: var(--hs-green);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 40px;
+            padding: 10px 26px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            box-shadow: 0 4px 0 #007a33, 0 8px 18px var(--hs-green-glow);
+        }
+        .btn-pill-search:hover {
+            background-color: var(--hs-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #007a33, 0 12px 25px var(--hs-green-glow);
+        }
+        .btn-pill-search:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #007a33, 0 4px 10px var(--hs-green-glow);
+        }
+
+        .btn-hs-green {
+            background-color: var(--hs-green);
+            color: #ffffff !important;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 0.6rem 1.6rem;
+            border: none;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 0 #007a33, 0 6px 14px var(--hs-green-glow);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-hs-green:hover {
+            background-color: var(--hs-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #007a33, 0 10px 20px var(--hs-green-glow);
+        }
+        .btn-hs-green:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #007a33, 0 3px 8px var(--hs-green-glow);
+        }
+
+        .btn-hs-outline {
+            color: var(--hs-dark) !important;
+            font-weight: 600;
+            padding: 0.55rem 1.3rem;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-hs-outline:hover {
+            color: var(--hs-green) !important;
+        }
+
+        /* Popular Tags Row */
+        .popular-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+        }
+        .popular-label {
+            color: var(--hs-text-muted);
+            font-weight: 500;
+        }
+        .popular-badge {
+            background: var(--hs-card-bg);
+            border: 1px solid var(--hs-border);
+            color: var(--hs-dark);
+            text-decoration: none;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 0 var(--hs-border), 0 3px 6px rgba(0,0,0,0.02);
+        }
+        .popular-badge:hover {
+            border-color: var(--hs-green);
+            color: var(--hs-green);
+            transform: translateY(-3px) scale(1.06);
+            box-shadow: 0 4px 0 var(--hs-green), 0 8px 20px var(--hs-green-glow);
+        }
+
+        /* HOW HIRESPHERE HELPS Section matching Screenshot */
+        .section-helps-wrapper {
+            padding-top: 3.5rem;
+            padding-bottom: 3.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .category-badge-green {
+            color: var(--hs-green);
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: inline-block;
+            padding: 4px 14px;
+            background: var(--hs-green-light);
+            border-radius: 20px;
+            box-shadow: 0 2px 10px var(--hs-green-glow);
+        }
+        .headline-helps {
+            font-size: 2.45rem;
+            font-weight: 800;
+            color: var(--hs-dark);
+            letter-spacing: -0.8px;
+            line-height: 1.2;
+            margin-bottom: 14px;
+        }
+        .subtext-helps {
+            font-size: 1.05rem;
+            color: var(--hs-text-muted);
+            line-height: 1.6;
+            max-width: 640px;
+            margin: 0 auto 46px auto;
+        }
+
+        /* 3 Feature Cards matching Screenshot with 3D Pop-out */
+        .feature-card-hs {
+            background: var(--hs-card-bg);
+            border: 1px solid var(--hs-border);
+            border-radius: 24px;
+            padding: 36px 30px;
+            height: 100%;
+            box-shadow: var(--card-shadow);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        .feature-card-hs::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--hs-green), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .feature-card-hs:hover::before {
+            opacity: 1;
+        }
+        .feature-icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--hs-green-light);
             border-radius: 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 18px rgba(0, 230, 118, 0.4);
-            margin-bottom: 16px;
+            color: var(--hs-green);
+            font-size: 1.35rem;
+            margin-bottom: 24px;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            transform: translateZ(35px);
+            box-shadow: 0 4px 15px var(--hs-green-glow);
         }
-        .btn-launch-live {
-            background-color: #00e676;
-            color: #050811 !important;
-            font-weight: 800;
-            border-radius: 14px;
-            padding: 14px 24px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 20px rgba(0, 230, 118, 0.35);
+        .feature-card-hs:hover .feature-icon-box {
+            transform: translateZ(48px) scale(1.12) rotate(8deg);
+            box-shadow: 0 8px 25px var(--hs-green-glow);
         }
-        .btn-launch-live:hover {
-            background-color: #00ff84;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(0, 230, 118, 0.5);
-        }
-        .btn-launch-showcase {
-            background-color: #131d33;
-            color: #f8fafc !important;
+        .feature-card-title {
+            font-size: 1.3rem;
             font-weight: 700;
-            border: 1px solid #273552;
-            border-radius: 14px;
-            padding: 14px 24px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.25s ease;
+            color: var(--hs-dark);
+            margin-bottom: 10px;
+            transform: translateZ(26px);
         }
-        .btn-launch-showcase:hover {
-            border-color: #00e676;
-            background-color: #1a2744;
+        .feature-card-text {
+            font-size: 0.95rem;
+            color: var(--hs-text-muted);
+            line-height: 1.6;
+            margin-bottom: 0;
+            transform: translateZ(18px);
+        }
+
+        /* Back to Top Button */
+        .back-to-top-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 0.45rem 1rem;
+            border-radius: 25px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .back-to-top-btn:hover {
+            background: var(--hs-green);
+            color: #ffffff;
+            border-color: var(--hs-green);
             transform: translateY(-2px);
+            box-shadow: 0 4px 14px var(--hs-green-glow);
+        }
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .back-to-top-btn:hover {
+            background: var(--hs-green);
+            color: #ffffff;
+            border-color: var(--hs-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px var(--hs-green-glow);
         }
     </style>
 </head>
 <body>
 
-<div class="portal-card text-center">
-    <div class="logo-box">
-        <i class="fas fa-cube"></i>
-    </div>
-    <h2 class="fw-bold mb-1">HireSphere</h2>
-    <p class="text-white-50 small mb-4">KTU B.Tech Computer Science &amp; Engineering Mini Project</p>
+<!-- Overall Full-Screen 3D Celestial Background Canvas with Scroll Effect -->
+<div class="overall-3d-bg" id="overall3DContainer">
+    <canvas id="career3DCanvas"></canvas>
+</div>
 
-    <div class="d-grid gap-3 mb-4 text-start">
-        <a href="http://127.0.0.1:8000/" target="_blank" class="btn-launch-live">
-            <div>
-                <div class="fw-bold fs-6"><i class="fas fa-server me-2"></i>Live Django Application</div>
-                <small class="opacity-75" style="font-weight: 500;">Database, Auth, Resume Analyzer &amp; Quizzes (Port 8000)</small>
+
+
+
+<!-- Header Navbar -->
+<nav class="navbar navbar-expand-lg navbar-hs">
+    <div class="container">
+        <a class="navbar-brand-hs" href="index.html">
+            <div class="logo-icon"><i class="fas fa-cube"></i></div>
+            <span>HireSphere</span>
+        </a>
+
+        <div class="collapse navbar-collapse show" id="navMain">
+            <ul class="navbar-nav mx-auto align-items-center gap-1 my-3 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link-hs active" href="index.html">
+                        <i class="fas fa-compass"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-hs" href="companies.html">
+                        <i class="fas fa-building"></i> Companies
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-hs" href="quiz.html">
+                        <i class="fas fa-graduation-cap"></i> Skill Quizzes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-hs" href="profile.html">
+                        <i class="fas fa-id-card"></i> Profile
+                    </a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+                <!-- Dark / Light Mode Switcher Pill with Micro-Animation -->
+                <button class="theme-switch-pill me-2" id="themeToggleBtn" type="button" aria-label="Toggle Dark/Light Mode" title="Toggle Dark/Light Mode">
+                    <span class="theme-switch-track">
+                        <span class="theme-switch-thumb">
+                            <i class="fas fa-sun icon-sun"></i>
+                            <i class="fas fa-moon icon-moon"></i>
+                        </span>
+                    </span>
+                </button>
+                <a href="companies.html" class="btn-hs-outline">
+                    <i class="fas fa-arrow-right-to-bracket"></i> Login
+                </a>
+                <a href="register.html" class="btn-hs-green">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
             </div>
-            <i class="fas fa-arrow-right fs-5"></i>
-        </a>
+        </div>
+    </div>
+</nav>
 
-        <a href="frontend/index.html" class="btn-launch-showcase">
-            <div>
-                <div class="fw-bold fs-6"><i class="fas fa-laptop-code me-2"></i>Frontend UI Showcase</div>
-                <small class="text-white-50">Static report presentation screens (Fig 4.1 to 4.6)</small>
+<!-- Ambient Breathing Glowing Background Orbs -->
+<div class="bg-ambient-orb orb-1"></div>
+<div class="bg-ambient-orb orb-2"></div>
+
+<div class="container flex-grow-1 position-relative" style="z-index: 2;">
+
+    <!-- ======================================================== -->
+    <!-- SECTION 1: Top Search Bar & Popular Tags (Exact Match)    -->
+    <!-- ======================================================== -->
+    <div class="pill-search-wrapper animate-fade-in-up delay-1">
+        <form id="jobSearchForm" onsubmit="event.preventDefault(); handleJobSearch();" class="pill-search-box breathing-pulse">
+            <!-- Job title input -->
+            <div class="pill-field">
+                <i class="fas fa-search text-success me-2"></i>
+                <input 
+                    type="text" 
+                    id="searchQueryInput"
+                    class="pill-input" 
+                    placeholder="Job title, skills or company..."
+                    oninput="handleJobSearch()"
+                    autocomplete="off"
+                >
             </div>
-            <i class="fas fa-arrow-right fs-5 text-secondary"></i>
-        </a>
+
+            <!-- Divider -->
+            <div class="pill-divider"></div>
+
+            <!-- Location input -->
+            <div class="pill-field">
+                <i class="fas fa-location-dot text-success me-2"></i>
+                <input 
+                    type="text" 
+                    id="searchLocationInput"
+                    class="pill-input" 
+                    placeholder="City or location"
+                    oninput="handleJobSearch()"
+                    autocomplete="off"
+                >
+            </div>
+
+            <!-- Search Button with 3D Depth Press -->
+            <button type="submit" class="btn-pill-search" id="searchSubmitBtn">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+
+        <!-- Popular Tags Row matching Screenshot with 3D Floating Badges -->
+        <div class="popular-row flex-wrap">
+            <span class="popular-label">Popular:</span>
+            <button type="button" class="popular-badge border-0" onclick="filterByPopularTag('Remote')">Remote</button>
+            <button type="button" class="popular-badge border-0" onclick="filterByPopularTag('Designer')">Designer</button>
+            <button type="button" class="popular-badge border-0" onclick="filterByPopularTag('Engineer')">Engineer</button>
+            <button type="button" class="popular-badge border-0" onclick="filterByPopularTag('Python')">Python</button>
+            <button type="button" class="popular-badge border-0" onclick="filterByPopularTag('Java')">Java</button>
+            <button type="button" class="popular-badge border-0" onclick="filterByPopularTag('Cloud')">Cloud</button>
+            <button type="button" class="popular-badge border-0" onclick="filterByPopularTag('SQL')">SQL</button>
+        </div>
     </div>
 
-    <div class="pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center small text-white-50">
-        <a href="docs/report 4.pdf" target="_blank" class="text-white-50 text-decoration-none">
-            <i class="fas fa-file-pdf text-danger me-1"></i>Project Report PDF
-        </a>
-        <span>&copy; 2025 HireSphere.&nbsp;&nbsp;&nbsp;&nbsp;Academic project.</span>
+    <!-- ======================================================== -->
+    <!-- SECTION 2: HOW HIRESPHERE HELPS (Exact Match)             -->
+    <!-- ======================================================== -->
+    <div class="section-helps-wrapper text-center animate-fade-in-up delay-2">
+        <div class="category-badge-green"><i class="fas fa-sparkles me-1"></i>HOW HIRESPHERE HELPS</div>
+        <h1 class="headline-helps">A simpler way to move your career forward</h1>
+        <p class="subtext-helps">
+            Explore opportunities, discover employers and present your professional profile through one candidate-focused platform.
+        </p>
+
+        <!-- 3 Feature Cards matching Screenshot with 3D Tilt Effect & Glare -->
+        <div class="row g-4 justify-content-center">
+            <!-- Card 1: Discover opportunities -->
+            <div class="col-md-4 animate-fade-in-up delay-3">
+                <div class="feature-card-hs tilt-card-3d">
+                    <div class="feature-icon-box">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-card-title">Discover opportunities</h3>
+                    <p class="feature-card-text">
+                        Find relevant openings using job keywords and preferred locations.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 2: Build your profile -->
+            <div class="col-md-4 animate-fade-in-up delay-4">
+                <div class="feature-card-hs tilt-card-3d">
+                    <div class="feature-icon-box">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3 class="feature-card-title">Build your profile</h3>
+                    <p class="feature-card-text">
+                        Organise your candidate information and showcase your skills and experience.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 3: Explore employers -->
+            <div class="col-md-4 animate-fade-in-up delay-5">
+                <div class="feature-card-hs tilt-card-3d">
+                    <div class="feature-icon-box">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="feature-card-title">Explore employers</h3>
+                    <p class="feature-card-text">
+                        Browse company information and learn more about potential workplaces.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 3: Current Job Opportunities with 3D Tilt         -->
+    <!-- ======================================================== -->
+    <div class="my-5 pt-2 animate-fade-in-up delay-4">
+        <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+            <div>
+                <h4 class="fw-bold mb-1" style="color: var(--hs-dark);">Current Opportunities</h4>
+                <p class="small mb-0" style="color: var(--hs-text-muted);">
+                    <span class="live-radar-dot"></span> Showing <span id="jobsCountDisplay" class="fw-bold text-success">14</span> available position(s) from database
+                </p>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="badge border rounded-pill px-3 py-2 small" style="background: var(--hs-card-bg); color: var(--hs-dark);">
+                    Candidate: <strong>Alex Rivera</strong> (Verified ATS 87%)
+                </span>
+                <a href="companies.html" class="text-success fw-bold text-decoration-none small">View Companies &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Dynamic Container Rendering all 14 Django Database Records -->
+        <div class="row g-4" id="jobsGridContainer">
+            <!-- Populated via JavaScript with real database records and genuine matching engine -->
+        </div>
+    </div>
+
+</div>
+
+<!-- Real Job Application Workflow Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg" style="background: var(--hs-card-bg); color: var(--hs-dark);">
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
+                <div>
+                    <span class="badge bg-success-subtle text-success fw-bold px-3 py-1 rounded-pill small mb-2" id="modalCompanyBadge">Company</span>
+                    <h4 class="modal-title fw-bold" id="modalJobTitle">Job Title</h4>
+                    <p class="small text-muted mb-0" id="modalJobMeta">Location &bull; Salary</p>
+                </div>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body px-4 py-3">
+                <!-- Real AI Matching Engine Score Breakdown Card -->
+                <div class="p-3 rounded-4 mb-4 border" style="background: var(--hs-bg); border-color: var(--hs-border) !important;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold small text-uppercase" style="color: var(--hs-text-muted);"><i class="fas fa-wand-magic-sparkles text-success me-1"></i>Genuine Compatibility Calculation</span>
+                        <span class="badge rounded-pill px-3 py-2 fw-bold text-white fs-6" id="modalMatchScoreBadge" style="background: linear-gradient(135deg, var(--hs-green), #008736);">87% Match</span>
+                    </div>
+                    <div class="progress mb-3" style="height: 8px;">
+                        <div class="progress-bar bg-success" id="modalMatchProgressBar" role="progressbar" style="width: 87%;"></div>
+                    </div>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <small class="fw-bold d-block text-success mb-1"><i class="fas fa-circle-check me-1"></i>Matched Skills (<span id="modalMatchedCount">0</span>)</small>
+                            <div class="d-flex flex-wrap gap-1" id="modalMatchedSkillsList"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="fw-bold d-block text-warning mb-1"><i class="fas fa-triangle-exclamation me-1"></i>Skill Gap / Missing (<span id="modalMissingCount">0</span>)</small>
+                            <div class="d-flex flex-wrap gap-1" id="modalMissingSkillsList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Candidate Application Form -->
+                <form id="realApplicationForm" onsubmit="event.preventDefault(); submitRealApplication();">
+                    <input type="hidden" id="modalJobId" value="">
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Candidate Name</label>
+                            <input type="text" class="form-control rounded-3" id="appCandidateName" value="Alex Rivera" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Email Address</label>
+                            <input type="email" class="form-control rounded-3" id="appCandidateEmail" value="alex.rivera@design.co" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Select Verified Resume</label>
+                        <select class="form-select rounded-3" id="appResumeSelect">
+                            <option value="Alex_Rivera_Design_Resume_2026.pdf" selected>📄 Alex_Rivera_Design_Resume_2026.pdf (Verified ATS 87% &bull; Oct 12, 2026)</option>
+                            <option value="Alex_Rivera_FullStack_2026.pdf">📄 Alex_Rivera_FullStack_2026.pdf (Verified ATS 91%)</option>
+                            <option value="upload_new">➕ Upload New Resume (PDF / DOCX)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Cover Note / Candidate Statement (Optional)</label>
+                        <textarea class="form-control rounded-3" id="appCoverNote" rows="2" placeholder="Highlight why your skills make you an exceptional fit..."></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+                        <small class="text-muted"><i class="fas fa-shield-halved text-success me-1"></i>Anonymous Screening active.</small>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-hs-outline" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-hs-green px-4 fw-bold" id="submitApplicationBtn">
+                                <i class="fas fa-paper-plane me-1"></i>Submit Application
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Floating Toast Notification for Application Success -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 99999;">
+    <div id="appSuccessToast" class="toast align-items-center text-white bg-success border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex p-2">
+            <div class="toast-body d-flex align-items-center gap-2">
+                <i class="fas fa-circle-check fs-4"></i>
+                <div id="toastMessage">Application submitted successfully!</div>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Meaningful Quote & Clean Minimalist Footer -->
+<footer style="background-color: var(--footer-bg); border-top: 1px solid var(--hs-border); padding: 26px 0 20px 0; margin-top: auto; position: relative; z-index: 10;">
+    <div class="container">
+        <!-- Meaningful Career Inspiration Quote -->
+        <div class="text-center mb-3 pb-3 border-bottom border-secondary border-opacity-25">
+            <p class="fst-italic text-white-50 mb-1" style="font-size: 0.95rem; font-weight: 500;">
+                <i class="fas fa-quote-left text-success me-2" style="opacity: 0.7;"></i>
+                <span id="footerCareerQuote">"The future depends on what you do today."</span>
+                <i class="fas fa-quote-right text-success ms-2" style="opacity: 0.7;"></i>
+            </p>
+            <span class="small text-white-50" style="opacity: 0.65;" id="footerCareerAuthor">&mdash; Mahatma Gandhi</span>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <div class="fw-bold text-white fs-5" style="letter-spacing: -0.3px;">HireSphere</div>
+                <div class="text-white-50 small">&copy; 2025 HireSphere.&nbsp;&nbsp;&nbsp;&nbsp;Academic project.</div>
+            </div>
+            <div>
+                <button type="button" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Back to Top">
+                    <span>Back to Top</span>
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Meaningful Career & Ambition Quotes Rotator
+    (function initFooterQuotes() {
+        const careerQuotes = [
+            { quote: "The future depends on what you do today.", author: "Mahatma Gandhi" },
+            { quote: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { quote: "Opportunities don't happen, you create them.", author: "Chris Grosser" },
+            { quote: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+            { quote: "Your talent determines what you can do. Your motivation determines how much you are willing to do.", author: "Lou Holtz" },
+            { quote: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+            { quote: "It always seems impossible until it's done.", author: "Nelson Mandela" }
+        ];
+        const qEl = document.getElementById('footerCareerQuote');
+        const aEl = document.getElementById('footerCareerAuthor');
+        if (qEl && aEl) {
+            const randomQ = careerQuotes[Math.floor(Math.random() * careerQuotes.length)];
+            qEl.textContent = `"${randomQ.quote}"`;
+            aEl.innerHTML = `&mdash; ${randomQ.author}`;
+        }
+    })();
+
+    // 1. Dark & Light Mode Controller
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const savedTheme = localStorage.getItem('hs-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', initialTheme);
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('hs-theme', next);
+        });
+    }
+
+    // 2. 3D Tilt Effect on Cursor Movement for Cards with Specular Glare
+    function setup3DTilt() {
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (isTouchDevice) return;
+        document.querySelectorAll('.tilt-card-3d').forEach(card => {
+            let glare = card.querySelector('.card-glare-3d');
+            if (!glare) {
+                glare = document.createElement('div');
+                glare.className = 'card-glare-3d';
+                card.appendChild(glare);
+            }
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -14;
+                const rotateY = ((x - centerX) / centerX) * 14;
+                card.style.transform = `perspective(1200px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(16px) scale3d(1.025, 1.025, 1.025)`;
+                
+                const percentX = (x / rect.width) * 100;
+                const percentY = (y / rect.height) * 100;
+                glare.style.opacity = '1';
+                glare.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale3d(1, 1, 1)';
+                if (glare) glare.style.opacity = '0';
+            });
+        });
+    }
+    setup3DTilt();
+
+    // 3. Interactive Full-Screen 3D Celestial Background with Silky Scroll & Parallax Effect
+    (function initOverall3DBackground() {
+        const canvas = document.getElementById('career3DCanvas');
+        if (!canvas || typeof THREE === 'undefined') return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 8.5;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Group containing all 3D objects
+        const group3D = new THREE.Group();
+        scene.add(group3D);
+
+        // Get initial theme
+        const getIsDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+        let isDark = getIsDark();
+
+        // 1. Outer Geodesic Icosahedron Wireframe
+        const geoMesh = new THREE.IcosahedronGeometry(2.35, 1);
+        const matMesh = new THREE.MeshBasicMaterial({
+            color: isDark ? 0x00e676 : 0x00b848,
+            wireframe: true,
+            transparent: true,
+            opacity: isDark ? 0.65 : 0.42
+        });
+        const sphereMesh = new THREE.Mesh(geoMesh, matMesh);
+        group3D.add(sphereMesh);
+
+        // 2. Inner Glowing Core Sphere
+        const coreGeo = new THREE.SphereGeometry(1.35, 20, 20);
+        const coreMat = new THREE.MeshBasicMaterial({
+            color: isDark ? 0x38bdf8 : 0x0284c7,
+            wireframe: true,
+            transparent: true,
+            opacity: isDark ? 0.55 : 0.32
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        group3D.add(core);
+
+        // 3. Orbiting Particles Field
+        const particleCount = 260;
+        const particleGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            const radius = 2.6 + Math.random() * 2.0;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+            positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+            positions[i + 2] = radius * Math.cos(phi);
+        }
+        particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particleMat = new THREE.PointsMaterial({
+            color: isDark ? 0x00e676 : 0x00a843,
+            size: 0.08,
+            transparent: true,
+            opacity: isDark ? 0.85 : 0.65
+        });
+        const particles = new THREE.Points(particleGeo, particleMat);
+        group3D.add(particles);
+
+        // 4. Dual Orbiting Rings
+        const ringGeo1 = new THREE.TorusGeometry(3.3, 0.016, 16, 90);
+        const ringGeo2 = new THREE.TorusGeometry(3.6, 0.016, 16, 90);
+        const ringMat = new THREE.MeshBasicMaterial({ 
+            color: isDark ? 0x00e676 : 0x00b848, 
+            transparent: true, 
+            opacity: isDark ? 0.55 : 0.35 
+        });
+        
+        const ring1 = new THREE.Mesh(ringGeo1, ringMat);
+        ring1.rotation.x = Math.PI / 3;
+        group3D.add(ring1);
+
+        const ring2 = new THREE.Mesh(ringGeo2, ringMat);
+        ring2.rotation.y = Math.PI / 3;
+        ring2.rotation.x = -Math.PI / 4;
+        group3D.add(ring2);
+
+        // Responsive base positioning
+        function updateBasePosition() {
+            const isDesktop = window.innerWidth >= 992;
+            return {
+                x: isDesktop ? 1.7 : 0,
+                y: isDesktop ? 0.2 : 0
+            };
+        }
+        let basePos = updateBasePosition();
+
+        // Scroll Tracking with Damped Inertia
+        let targetScrollY = window.scrollY || window.pageYOffset || 0;
+        let currentScrollY = targetScrollY;
+        let lastScrollY = targetScrollY;
+        let smoothedVelocity = 0;
+
+        window.addEventListener('scroll', () => {
+            targetScrollY = window.scrollY || window.pageYOffset || 0;
+        }, { passive: true });
+
+        // Mouse Parallax
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+        let currentMouseX = 0;
+        let currentMouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            targetMouseX = ((e.clientX / window.innerWidth) * 2 - 1) * 0.45;
+            targetMouseY = (-(e.clientY / window.innerHeight) * 2 + 1) * 0.45;
+        });
+
+        // Window Resize Handling
+        function onWindowResize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            basePos = updateBasePosition();
+        }
+        window.addEventListener('resize', onWindowResize);
+
+        // Animation Loop with Scroll Effect
+        let clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            // Smooth scroll lerp (silky inertial momentum)
+            const scrollDelta = targetScrollY - currentScrollY;
+            currentScrollY += scrollDelta * 0.075;
+
+            // Scroll velocity
+            const vel = targetScrollY - lastScrollY;
+            lastScrollY = targetScrollY;
+            smoothedVelocity += (Math.abs(vel) - smoothedVelocity) * 0.1;
+
+            // Scroll progress across entire page (0 to 1)
+            const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            const scrollFraction = Math.min(1, Math.max(0, currentScrollY / maxScroll));
+
+            // Smooth mouse parallax lerp
+            currentMouseX += (targetMouseX - currentMouseX) * 0.05;
+            currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+
+            // SCROLL EFFECT:
+            // 1. Dynamic continuous rotation + responsive acceleration from scrolling
+            sphereMesh.rotation.y = elapsedTime * 0.12 + currentScrollY * 0.0032 + currentMouseX;
+            sphereMesh.rotation.x = elapsedTime * 0.08 + currentScrollY * 0.002 + currentMouseY;
+            sphereMesh.rotation.z = currentScrollY * 0.0008;
+
+            // 2. Inner core counter-rotation on scroll
+            core.rotation.y = - (elapsedTime * 0.2 + currentScrollY * 0.0048);
+            core.rotation.x = elapsedTime * 0.1 + currentScrollY * 0.0022;
+
+            // 3. Orbital rings dynamic tilt & spin with scroll
+            ring1.rotation.z = elapsedTime * 0.14 + currentScrollY * 0.0055;
+            ring2.rotation.z = - (elapsedTime * 0.12 + currentScrollY * 0.0045);
+            ring1.rotation.x = (Math.PI / 3) + currentScrollY * 0.001;
+            ring2.rotation.y = (Math.PI / 3) - currentScrollY * 0.001;
+
+            // 4. Particle cloud drift
+            particles.rotation.y = elapsedTime * 0.05 + currentScrollY * 0.0018;
+            particles.rotation.x = currentScrollY * 0.0009;
+
+            // 5. Parallax position shift across page sections as you scroll
+            const isDesktop = window.innerWidth >= 992;
+            const startX = isDesktop ? 1.7 : 0;
+            const endX = isDesktop ? -0.9 : 0;
+            group3D.position.x = startX + (endX - startX) * scrollFraction;
+            group3D.position.y = (isDesktop ? 0.2 : 0) - (currentScrollY * 0.0018);
+
+            // 6. Dynamic scale breathing pulse + scroll expansion
+            const breathe = 1 + Math.sin(elapsedTime * 1.2) * 0.025 + Math.min(0.12, smoothedVelocity * 0.0025);
+            group3D.scale.set(breathe, breathe, breathe);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Dynamic theme synchronization
+        const observer = new MutationObserver(() => {
+            const dark = getIsDark();
+            matMesh.color.setHex(dark ? 0x00e676 : 0x00b848);
+            matMesh.opacity = dark ? 0.65 : 0.42;
+
+            coreMat.color.setHex(dark ? 0x38bdf8 : 0x0284c7);
+            coreMat.opacity = dark ? 0.55 : 0.32;
+
+            particleMat.color.setHex(dark ? 0x00e676 : 0x00a843);
+            particleMat.opacity = dark ? 0.85 : 0.65;
+
+            ringMat.color.setHex(dark ? 0x00e676 : 0x00b848);
+            ringMat.opacity = dark ? 0.55 : 0.35;
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    })();
+
+    // =========================================================================
+    // 4. DJANGO DATABASE JOBS, GENUINE MATCHING ENGINE & REAL APPLICATION FLOW
+    // =========================================================================
+
+    // All 14 Django Database Records directly exported from SQLite
+    let LIVE_JOBS_DATA = [
+      {
+        id: 14,
+        title: "Database Administrator / SQL Engineer",
+        company: "Intileo Technologies",
+        location: "Hyderabad / Remote",
+        job_type: "Full Time",
+        experience: "2-5 Years",
+        salary: "₹6,50,000 - ₹11,00,000 / yr",
+        skills: ["SQL", "PostgreSQL", "MySQL", "Database Optimization"],
+        description: "Manage high-volume database instances, optimize complex queries, enforce indexing and ensure ACID compliance.",
+        posted: "Nov 02, 2026"
+      },
+      {
+        id: 13,
+        title: "Junior Cloud & DevOps Specialist",
+        company: "Intileo Technologies",
+        location: "Kochi, Kerala",
+        job_type: "Full Time",
+        experience: "Entry Level",
+        salary: "₹4,50,000 - ₹7,50,000 / yr",
+        skills: ["Docker", "AWS", "Linux", "Python", "Git"],
+        description: "Help maintain reliable cloud infrastructure, container orchestration, and continuous integration pipelines.",
+        posted: "Nov 02, 2026"
+      },
+      {
+        id: 12,
+        title: "Java Enterprise & Spring Boot Developer",
+        company: "Tata Consultancy Services (TCS)",
+        location: "Thiruvananthapuram, Kerala",
+        job_type: "Full Time",
+        experience: "2-4 Years",
+        salary: "₹6,00,000 - ₹10,00,000 / yr",
+        skills: ["Java", "Spring Boot", "SQL", "MySQL", "REST API"],
+        description: "Looking for strong Core Java developers to design enterprise microservices using Spring Boot, Hibernate, and cloud native architectures.",
+        posted: "Nov 02, 2026"
+      },
+      {
+        id: 11,
+        title: "Full Stack Web Engineer (Python / React)",
+        company: "Infosys Limited",
+        location: "Bengaluru, India / Remote",
+        job_type: "Full Time",
+        experience: "Entry - 2 Years",
+        salary: "₹5,50,000 - ₹9,50,000 / yr",
+        skills: ["Python", "React", "JavaScript", "HTML", "CSS", "SQL"],
+        description: "Join our modern digital services team engineering responsive, high-performance web applications. You will architect both interactive frontend components and resilient backend endpoints.",
+        posted: "Nov 02, 2026"
+      },
+      {
+        id: 10,
+        title: "Python & Django Backend Developer",
+        company: "Tata Consultancy Services (TCS)",
+        location: "Kochi, Kerala / Hybrid",
+        job_type: "Full Time",
+        experience: "1-3 Years",
+        salary: "₹5,00,000 - ₹8,50,000 / yr",
+        skills: ["Python", "Django", "SQL", "REST API", "Git"],
+        description: "We are seeking a talented Python & Django Developer to build robust backend APIs, scalable microservices, and database pipelines for enterprise clients.",
+        posted: "Nov 02, 2026"
+      },
+      {
+        id: 9,
+        title: "QA Analyst & Automation Engineer",
+        company: "Infosys Limited",
+        location: "Chennai, Tamil Nadu",
+        job_type: "Contract",
+        experience: "1-3 Years",
+        salary: "₹4,00,000 - ₹7,00,000 / yr",
+        skills: ["Selenium", "Python", "PyTest", "SQL", "Manual Testing", "JIRA"],
+        description: "Automate quality assurance test suites, execute regression checks, and ensure enterprise software reliability and zero bugs.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 8,
+        title: "Cloud Infrastructure Engineer",
+        company: "Infosys Limited",
+        location: "Bengaluru, Karnataka",
+        job_type: "Full Time",
+        experience: "2-5 Years",
+        salary: "₹7,00,000 - ₹12,00,000 / yr",
+        skills: ["AWS", "Docker", "Kubernetes", "Terraform", "Linux", "CI/CD"],
+        description: "Architect, monitor, and scale secure AWS cloud infrastructure utilizing Kubernetes containers and automated CI/CD.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 7,
+        title: "Java Full Stack Developer",
+        company: "Infosys Limited",
+        location: "Mysuru / Remote",
+        job_type: "Full Time",
+        experience: "3-6 Years",
+        salary: "₹6,00,000 - ₹10,50,000 / yr",
+        skills: ["Java", "Core Java", "Spring MVC", "REST API", "PostgreSQL"],
+        description: "Develop resilient backend services and REST APIs supporting high-throughput enterprise transaction processing.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 6,
+        title: "Flutter Mobile Application Developer",
+        company: "Intileo Technologies",
+        location: "Pune / Remote",
+        job_type: "Full Time",
+        experience: "2+ Years",
+        salary: "₹5,00,000 - ₹9,00,000 / yr",
+        skills: ["Flutter", "Dart", "Firebase", "REST API", "Mobile UI", "Android"],
+        description: "Create high performance cross-platform mobile apps for Android and iOS with clean state management and smooth animations.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 5,
+        title: "Full Stack MERN Developer",
+        company: "Intileo Technologies",
+        location: "Bengaluru, Karnataka",
+        job_type: "Full Time",
+        experience: "2-4 Years",
+        salary: "₹5,50,000 - ₹9,50,000 / yr",
+        skills: ["React", "Node.js", "JavaScript", "Express", "MongoDB", "HTML", "CSS"],
+        description: "Build modern responsive MERN stack web applications with rich user interfaces and secure REST API services.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 4,
+        title: "Salesforce Developers & CRM Analyst",
+        company: "Intileo Technologies",
+        location: "Remote / Hyderabad",
+        job_type: "Full Time",
+        experience: "3-5 Years",
+        salary: "₹6,50,000 - ₹11,00,000 / yr",
+        skills: ["Salesforce", "Apex", "Lightning Web Components", "SOQL", "CRM"],
+        description: "Configure and customize enterprise Salesforce CRM instances, custom Apex triggers, and Lightning Web Components.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 3,
+        title: "SAP ERP Consultant",
+        company: "Tata Consultancy Services (TCS)",
+        location: "Hyderabad, Telangana",
+        job_type: "Contract",
+        experience: "5+ Years",
+        salary: "₹7,50,000 - ₹13,00,000 / yr",
+        skills: ["SAP ERP", "ABAP", "SAP HANA", "SQL", "Supply Chain"],
+        description: "Deliver enterprise SAP ERP customizations, ABAP programming, and business workflow automations across cloud instances.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 2,
+        title: "Big Data & Pipeline Engineer",
+        company: "Tata Consultancy Services (TCS)",
+        location: "Bengaluru, Karnataka",
+        job_type: "Full Time",
+        experience: "2-4 Years",
+        salary: "₹6,50,000 - ₹11,50,000 / yr",
+        skills: ["Python", "SQL", "Apache Spark", "PostgreSQL", "ETL", "Pandas"],
+        description: "Build scalable batch and real-time data pipelines, schema modeling, and optimized big data architectures for analytics.",
+        posted: "Mar 30, 2026"
+      },
+      {
+        id: 1,
+        title: "Enterprise Java Full Stack Specialist",
+        company: "Tata Consultancy Services (TCS)",
+        location: "Mumbai / Remote",
+        job_type: "Full Time",
+        experience: "3-5 Years",
+        salary: "₹6,00,000 - ₹10,00,000 / yr",
+        skills: ["Java", "Spring Boot", "React", "MySQL", "Microservices"],
+        description: "Design and deploy robust full-stack Java enterprise solutions with Spring Boot backends and modern reactive frontends.",
+        posted: "Mar 30, 2026"
+      }
+    ];
+
+    // Candidate Certified Skills (Alex Rivera / KTU Candidate Profile)
+    const CANDIDATE_PROFILE_SKILLS = [
+        "Python", "React", "JavaScript", "HTML", "CSS", 
+        "SQL", "PostgreSQL", "Django", "Docker", "Git", "REST API", "UI/UX Design"
+    ];
+
+    // GENUINE MATCHING CALCULATION ENGINE
+    function calculateGenuineCompatibility(requiredSkills, candidateSkills = CANDIDATE_PROFILE_SKILLS) {
+        if (!requiredSkills || requiredSkills.length === 0) {
+            return { score: 75, matched: [], missing: [] };
+        }
+        
+        const normCandidate = candidateSkills.map(s => s.toLowerCase().trim());
+        const matched = [];
+        const missing = [];
+        
+        requiredSkills.forEach(req => {
+            const reqLower = req.toLowerCase().trim();
+            const isMatch = normCandidate.some(cs => cs === reqLower || reqLower.includes(cs) || cs.includes(reqLower));
+            if (isMatch) {
+                matched.push(req);
+            } else {
+                missing.push(req);
+            }
+        });
+        
+        const rawPercentage = (matched.length / requiredSkills.length) * 100;
+        // Verified Assessment Bonus weighting (matching matching_engine.py in Django)
+        const verifiedBonus = Math.min(10, matched.length * 2);
+        const finalScore = Math.min(100, Math.max(25, Math.round(rawPercentage + (matched.length > 0 ? verifiedBonus : 0))));
+        
+        return {
+            score: finalScore,
+            matched: matched,
+            missing: missing
+        };
+    }
+
+    // Get applied job IDs from localStorage
+    function getAppliedJobIds() {
+        try {
+            return JSON.parse(localStorage.getItem('hs_applied_job_ids') || '[]');
+        } catch(e) {
+            return [];
+        }
+    }
+
+    // Save applied job ID to localStorage
+    function markJobAsApplied(jobId) {
+        const applied = getAppliedJobIds();
+        if (!applied.includes(Number(jobId))) {
+            applied.push(Number(jobId));
+            localStorage.setItem('hs_applied_job_ids', JSON.stringify(applied));
+        }
+    }
+
+    // Helper: Company Logo Mapping
+    function getCompanyLogo(companyName) {
+        const name = (companyName || '').toLowerCase();
+        if (name.includes('tata') || name.includes('tcs')) {
+            return {
+                url: 'img/company_logos/tcs.svg',
+                alt: 'TCS Logo',
+                initials: 'TCS',
+                bg: '#001f3f'
+            };
+        } else if (name.includes('infosys')) {
+            return {
+                url: 'img/company_logos/infosys.svg',
+                alt: 'Infosys Logo',
+                initials: 'INFY',
+                bg: '#007cc3'
+            };
+        } else if (name.includes('intileo')) {
+            return {
+                url: 'img/company_logos/intileo.svg',
+                alt: 'Intileo Logo',
+                initials: 'INT',
+                bg: '#0ea5e9'
+            };
+        }
+        return {
+            url: null,
+            alt: companyName,
+            initials: (companyName || 'C').charAt(0).toUpperCase(),
+            bg: '#00b848'
+        };
+    }
+
+    // RENDER JOBS GRID
+    function renderJobsGrid(jobsList) {
+        const container = document.getElementById('jobsGridContainer');
+        const countDisplay = document.getElementById('jobsCountDisplay');
+        if (!container) return;
+
+        if (countDisplay) {
+            countDisplay.textContent = jobsList.length;
+        }
+
+        if (jobsList.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="mb-3 text-muted fs-1"><i class="fas fa-search"></i></div>
+                    <h5 class="fw-bold" style="color: var(--hs-dark);">No jobs found matching your criteria</h5>
+                    <p class="text-muted small">Try different keywords, locations or skill categories.</p>
+                    <button class="btn btn-sm btn-hs-green px-4 rounded-pill mt-2" onclick="clearJobFilters()">
+                        <i class="fas fa-rotate-left me-1"></i>Clear Filters
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        const appliedIds = getAppliedJobIds();
+
+        container.innerHTML = jobsList.map(job => {
+            const comp = calculateGenuineCompatibility(job.skills);
+            const isApplied = appliedIds.includes(job.id);
+            const logo = getCompanyLogo(job.company);
+
+            // Badge gradient based on calculated score
+            let scoreBg = 'linear-gradient(135deg, var(--hs-green), #008736)';
+            if (comp.score < 60) scoreBg = '#64748b';
+            else if (comp.score < 80) scoreBg = 'linear-gradient(135deg, #0284c7, #0369a1)';
+
+            const logoHtml = logo.url ? 
+                `<img src="${logo.url}" alt="${logo.alt}" style="width: 100%; height: 100%; object-fit: contain;">` :
+                `<span class="fw-bold text-white small">${logo.initials}</span>`;
+
+            const skillsBadges = job.skills.slice(0, 3).map(skill => 
+                `<span class="badge border small rounded-pill" style="background: var(--hs-bg); color: var(--hs-text-muted);">${skill}</span>`
+            ).join('');
+
+            const extraSkills = job.skills.length > 3 ? 
+                `<span class="badge border small rounded-pill" style="background: var(--hs-bg); color: var(--hs-text-muted);">+${job.skills.length - 3}</span>` : '';
+
+            const applyButtonHtml = isApplied ? `
+                <span class="badge bg-success rounded-pill px-3 py-2">
+                    <i class="fas fa-check me-1"></i>Applied
+                </span>
+            ` : `
+                <button type="button" class="btn btn-sm btn-hs-green px-3 rounded-pill fw-bold" onclick="openApplyModal(${job.id})">
+                    Apply Now
+                </button>
+            `;
+
+            return `
+            <div class="col-md-6 col-lg-4 animate-fade-in-up">
+                <div class="feature-card-hs tilt-card-3d p-4 d-flex flex-column justify-content-between h-100" style="min-height: 290px;">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="company-logo-badge rounded-3 overflow-hidden d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px; background: #ffffff; border: 1px solid var(--hs-border); flex-shrink: 0;">
+                                    ${logoHtml}
+                                </div>
+                                <div style="min-width: 0;">
+                                    <span class="fw-bold d-block text-truncate" style="color: var(--hs-dark); font-size: 0.85rem; max-width: 145px;" title="${job.company}">
+                                        ${job.company}
+                                    </span>
+                                    <span class="text-muted d-block" style="font-size: 0.72rem; line-height: 1;">
+                                        <i class="fas fa-check-circle text-success me-1"></i>Verified Employer
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="badge rounded-pill px-3 py-2 fw-bold text-white flex-shrink-0" 
+                                  style="background: ${scoreBg}; font-size: 0.78rem;" 
+                                  title="Matched: ${comp.matched.join(', ') || 'None'} | Missing: ${comp.missing.join(', ') || 'None'}">
+                                <i class="fas fa-bolt me-1"></i>${comp.score}% Match
+                            </span>
+                        </div>
+
+                        <h5 class="fw-bold mb-2">
+                            <a href="javascript:void(0)" onclick="openApplyModal(${job.id})" class="text-decoration-none" style="color: var(--hs-dark); transition: color 0.2s;">
+                                ${job.title}
+                            </a>
+                        </h5>
+
+                        <div class="small mb-3" style="color: var(--hs-text-muted);">
+                            <div><i class="fas fa-location-dot text-success me-2"></i>${job.location}</div>
+                            <div><i class="fas fa-briefcase text-success me-2"></i>${job.experience} &bull; ${job.job_type}</div>
+                            <div class="fw-bold" style="color: var(--hs-green);"><i class="fas fa-indian-rupee-sign me-1"></i>${job.salary}</div>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-1 mb-4">
+                            ${skillsBadges}
+                            ${extraSkills}
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top d-flex justify-content-between align-items-center" style="border-color: var(--hs-border) !important;">
+                        <small style="color: var(--hs-text-muted);">${job.posted}</small>
+                        <div class="d-flex gap-2 align-items-center">
+                            <button type="button" class="btn btn-sm btn-hs-outline px-2 rounded-pill small" onclick="openApplyModal(${job.id})">
+                                Details
+                            </button>
+                            ${applyButtonHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
+
+        // Re-attach 3D Tilt handlers to new elements
+        if (typeof setup3DTilt === 'function') {
+            setup3DTilt();
+        }
+    }
+
+    // ACTUAL SEARCH FUNCTION (Replaces Alert)
+    function handleJobSearch() {
+        const queryInput = document.getElementById('searchQueryInput');
+        const locInput = document.getElementById('searchLocationInput');
+
+        const q = (queryInput ? queryInput.value : '').toLowerCase().trim();
+        const loc = (locInput ? locInput.value : '').toLowerCase().trim();
+
+        const filtered = LIVE_JOBS_DATA.filter(job => {
+            const matchesQuery = !q || 
+                job.title.toLowerCase().includes(q) ||
+                job.company.toLowerCase().includes(q) ||
+                job.description.toLowerCase().includes(q) ||
+                job.skills.some(s => s.toLowerCase().includes(q));
+
+            const matchesLoc = !loc || 
+                job.location.toLowerCase().includes(loc);
+
+            return matchesQuery && matchesLoc;
+        });
+
+        renderJobsGrid(filtered);
+    }
+
+    // Filter by Popular Category Tag
+    function filterByPopularTag(tag) {
+        const queryInput = document.getElementById('searchQueryInput');
+        if (queryInput) {
+            queryInput.value = tag;
+        }
+        handleJobSearch();
+    }
+
+    // Clear Filters
+    function clearJobFilters() {
+        const queryInput = document.getElementById('searchQueryInput');
+        const locInput = document.getElementById('searchLocationInput');
+        if (queryInput) queryInput.value = '';
+        if (locInput) locInput.value = '';
+        renderJobsGrid(LIVE_JOBS_DATA);
+    }
+
+    // OPEN REAL APPLICATION MODAL
+    let currentSelectedJob = null;
+
+    function openApplyModal(jobId) {
+        const job = LIVE_JOBS_DATA.find(j => j.id === jobId);
+        if (!job) return;
+        currentSelectedJob = job;
+
+        const comp = calculateGenuineCompatibility(job.skills);
+
+        document.getElementById('modalJobId').value = job.id;
+        document.getElementById('modalJobTitle').textContent = job.title;
+        const logo = getCompanyLogo(job.company);
+        const modalLogoHtml = logo.url ? 
+            `<img src="${logo.url}" alt="${logo.alt}" style="width: 18px; height: 18px; object-fit: contain; margin-right: 6px; vertical-align: middle;">` : '';
+        document.getElementById('modalCompanyBadge').innerHTML = `${modalLogoHtml}${job.company}`;
+        document.getElementById('modalJobMeta').innerHTML = `
+            <i class="fas fa-location-dot text-success me-1"></i>${job.location} &bull; 
+            <i class="fas fa-briefcase text-success me-1"></i>${job.experience} &bull; 
+            <strong class="text-success">${job.salary}</strong>
+        `;
+
+        document.getElementById('modalMatchScoreBadge').textContent = `${comp.score}% Match`;
+        document.getElementById('modalMatchProgressBar').style.width = `${comp.score}%`;
+
+        document.getElementById('modalMatchedCount').textContent = comp.matched.length;
+        document.getElementById('modalMatchedSkillsList').innerHTML = comp.matched.map(s => 
+            `<span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill small"><i class="fas fa-check me-1"></i>${s}</span>`
+        ).join('') || '<span class="text-muted small">No direct match</span>';
+
+        document.getElementById('modalMissingCount').textContent = comp.missing.length;
+        document.getElementById('modalMissingSkillsList').innerHTML = comp.missing.map(s => 
+            `<span class="badge bg-warning-subtle text-dark border border-warning-subtle px-2 py-1 rounded-pill small">${s}</span>`
+        ).join('') || '<span class="text-success small"><i class="fas fa-check-double me-1"></i>Zero skill gaps!</span>';
+
+        // Check if already applied
+        const appliedIds = getAppliedJobIds();
+        const submitBtn = document.getElementById('submitApplicationBtn');
+        if (appliedIds.includes(job.id)) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-check me-1"></i>Already Applied';
+        } else {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane me-1"></i>Submit Application';
+        }
+
+        const modalEl = document.getElementById('applyModal');
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+    }
+
+    // SUBMIT REAL APPLICATION WORKFLOW
+    function submitRealApplication() {
+        if (!currentSelectedJob) return;
+
+        const candidateName = document.getElementById('appCandidateName').value;
+        const candidateEmail = document.getElementById('appCandidateEmail').value;
+        const selectedResume = document.getElementById('appResumeSelect').value;
+        const coverNote = document.getElementById('appCoverNote').value;
+
+        const comp = calculateGenuineCompatibility(currentSelectedJob.skills);
+
+        // Record application
+        markJobAsApplied(currentSelectedJob.id);
+
+        // Store application in localStorage for persistence
+        const applications = JSON.parse(localStorage.getItem('hs_submitted_applications') || '[]');
+        applications.push({
+            job_id: currentSelectedJob.id,
+            job_title: currentSelectedJob.title,
+            company: currentSelectedJob.company,
+            candidate_name: candidateName,
+            candidate_email: candidateEmail,
+            resume: selectedResume,
+            cover_note: coverNote,
+            score: comp.score,
+            applied_at: new Date().toISOString()
+        });
+        localStorage.setItem('hs_submitted_applications', JSON.stringify(applications));
+
+        // Close modal
+        const modalEl = document.getElementById('applyModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+
+        // Show celebratory toast notification
+        const toastEl = document.getElementById('appSuccessToast');
+        const toastMsg = document.getElementById('toastMessage');
+        if (toastMsg) {
+            toastMsg.innerHTML = `<strong>Application Sent!</strong> Applied for <b>${currentSelectedJob.title}</b> at ${currentSelectedJob.company} with <b>${comp.score}% Compatibility</b>.`;
+        }
+        if (toastEl) {
+            const toast = new bootstrap.Toast(toastEl, { delay: 4500 });
+            toast.show();
+        }
+
+        // Re-render grid to update button to "✓ Applied"
+        handleJobSearch();
+    }
+
+    // Try fetching live Django backend records if server is running
+    (function tryFetchLiveDjangoJobs() {
+        fetch('http://127.0.0.1:8000/jobs/api/list/')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.jobs && data.jobs.length > 0) {
+                    LIVE_JOBS_DATA = data.jobs;
+                    renderJobsGrid(LIVE_JOBS_DATA);
+                }
+            })
+            .catch(() => {
+                // If offline or Django server isn't running, render the 14 embedded SQLite records
+                renderJobsGrid(LIVE_JOBS_DATA);
+            });
+    })();
+
+    // Initial render
+    renderJobsGrid(LIVE_JOBS_DATA);
+</script>
 </body>
 </html>
